@@ -2,497 +2,138 @@
 
 Проект: **LLM-generated features для прогнозирования финансовых временных рядов**  
 Режим: **минимальные сроки, контроль по маленьким задачам**  
-Дата старта трекера: **2026-06-24**
-
----
-
-## 0. Правила работы
-
-Этот файл — единая точка контроля проекта.
-
-1. Любая новая задача сначала добавляется в раздел **9. Входящие задачи**.
-2. Перед началом задача получает `ID`, приоритет, статус, владельца, результат и Definition of Done.
-3. После выполнения задача переводится в `DONE`.
-4. Важные решения фиксируются в разделе **10. Журнал решений**.
-5. Нельзя начинать новую крупную задачу, пока не закрыт текущий P0-блок.
-
-### Статусы
-
-| Статус | Значение |
-|---|---|
-| TODO | задача ещё не начата |
-| NEXT | ближайшая задача |
-| IN_PROGRESS | задача в работе |
-| BLOCKED | задача заблокирована |
-| REVIEW | нужно проверить результат |
-| DONE | задача выполнена |
-| CANCELLED | задача отменена |
-
-### Приоритеты
-
-| Приоритет | Значение |
-|---|---|
-| P0 | нужно для минимально валидного проекта |
-| P1 | нужно для хорошей версии |
-| P2 | улучшение, если останется время |
+Дата старта трекера: **2026-06-24**  
+Последнее обновление: **2026-06-25**
 
 ---
 
 ## 1. Минимальная цель проекта
 
-Сделать воспроизводимый MVP-эксперимент, который показывает, дают ли LLM-признаки дополнительную предсказательную информацию относительно классических рыночных признаков.
+Сделать воспроизводимый MVP-эксперимент, который проверяет, дают ли LLM/FinBERT-признаки дополнительную предсказательную информацию относительно классических рыночных признаков.
 
-MVP должен отвечать на вопрос:
-
-```text
-Улучшают ли LLM-generated features качество прогноза по сравнению с prices-only baseline?
-```
-
-Минимальный pipeline:
+Основной вопрос:
 
 ```text
-Data
-→ Target definition
-→ Time-safe feature generation
-→ Train/validation/test split
-→ Baseline models
-→ LLM-feature model
-→ Metrics
-→ Comparison table
+Улучшают ли LLM-generated features качество прогноза next-day direction по сравнению с baseline-моделями?
 ```
 
 ---
 
-## 2. Что нельзя делать до закрытия P0
+## 2. Текущий статус
 
-- Нельзя расширять список датасетов, пока не работает один воспроизводимый AAPL/BTC/SPY эксперимент.
-- Нельзя писать финальные выводы по качеству модели без baseline.
-- Нельзя считать accuracy значимой без majority baseline и confusion matrix.
-- Нельзя использовать признаки, если не доказано, что они доступны на момент прогноза.
-- Нельзя выбирать эпоху по test set.
-- Нельзя смешивать задачи общей статьи, курсовой Стаса, курсовой Антона и моей курсовой.
-
----
-
-## 3. Критический путь
+Основной MVP-run зафиксирован:
 
 ```text
-P0.1 Замечания научного руководителя — DONE
-  ↓
-P0.2 Формальная постановка задачи — NEXT
-  ↓
-P0.3 Аудит notebook 4aapl.ipynb — DONE
-  ↓
-P0.4 Чистый MVP dataset
-  ↓
-P0.5 Baseline models
-  ↓
-P0.6 LLM-feature model
-  ↓
-P0.7 Evaluation table
-  ↓
-P0.8 Текст методологии
+RUN 03 = primary experiment
+```
+
+Главный артефакт результатов:
+
+```text
+reports/RESULTS_MVP.md
+```
+
+Основной вывод:
+
+```text
+В рамках текущего MVP FinBERT-признаки не показали устойчивого преимущества относительно baseline-моделей.
 ```
 
 ---
 
-## 4. P0 — задачи на минимально валидный результат
+## 3. Primary experiment
 
-### 4.1. Методология
+| Поле | Значение |
+|---|---|
+| Primary run | RUN 03 |
+| Notebook | `notebooks/02_mvp_aapl_date_split.ipynb` с заменённой Cell 7 |
+| Split | `chronological_row_balanced_by_decision_date` |
+| Asset | AAPL |
+| Target | `y_t = 1{Close_{t+1} > Close_t}` |
+| Frequency | daily |
+| Horizon | 1 trading day |
+| Train | 1104 rows, 2020-04-01 -- 2020-06-15 |
+| Validation | 252 rows, 2020-06-16 -- 2020-06-29 |
+| Test | 222 rows, 2020-06-30 -- 2020-09-30 |
 
-| ID | Задача | Приоритет | Статус | Владелец | Результат |
-|---|---|---|---|---|---|
-| METH-001 | Формально определить target `y_t` | P0 | TODO | Максим + Стас | формула target |
-| METH-002 | Определить горизонт прогноза | P0 | TODO | Максим + Стас | `h = 1 day` или другой |
-| METH-003 | Определить цену для target | P0 | TODO | Максим + Стас | Close/Open/Adj Close |
-| METH-004 | Описать временную шкалу признаков | P0 | TODO | Максим + Стас | схема `t-k ... t -> t+h` |
-| METH-005 | Зафиксировать, какие признаки доступны в момент прогноза | P0 | TODO | Максим + Стас | leakage-safe список |
-| METH-006 | Определить baseline-сравнения | P0 | TODO | Максим | список baseline |
-| METH-007 | Определить метрики | P0 | TODO | Максим | accuracy, F1, ROC-AUC, confusion matrix |
+Primary artifacts:
 
-Definition of Done:
-
-- [ ] Есть формула `y_t`.
-- [ ] Есть горизонт прогноза.
-- [ ] Есть схема доступности данных.
-- [ ] Есть список baseline.
-- [ ] Есть список метрик.
-- [ ] Это можно вставить в курсовую без переписывания.
-
----
-
-### 4.2. Аудит `4aapl.ipynb`
-
-| ID | Задача | Приоритет | Статус | Владелец | Результат |
-|---|---|---|---|---|---|
-| CODE-001 | Открыть `4aapl.ipynb` и выписать структуру пайплайна | P0 | DONE | Максим | карта notebook |
-| CODE-002 | Найти, где создаётся таргет | P0 | DONE | Максим | номер ячейки / функция |
-| CODE-003 | Найти, где формируются price features | P0 | DONE | Максим | список признаков |
-| CODE-004 | Найти, где формируются FinBERT features | P0 | DONE | Максим | список LLM-признаков |
-| CODE-005 | Найти возможные leakage-места | P0 | DONE | Максим | список проблем |
-| CODE-006 | Найти, где делается train/test split и scaler | P0 | DONE | Максим | список исправлений |
-| CODE-007 | Решить: чинить notebook или выносить в `.py`-модули | P0 | NEXT | Максим + Стас | решение по архитектуре |
-
-Definition of Done:
-
-- [x] Понятно, что делает каждая часть notebook.
-- [x] Найдены все места, связанные с target.
-- [x] Найдены все места, связанные с признаками.
-- [x] Найдены все leakage-риски.
-- [x] Составлен список минимальных исправлений.
+```text
+reports/PRIMARY_EXPERIMENT.md
+reports/RUN_03_RESULTS_REVIEW.md
+reports/RESULTS_MVP.md
+reports/tables/dataset_summary.csv
+reports/tables/metrics.csv
+reports/tables/confusion_matrix.csv
+reports/tables/predictions.csv
+reports/tables/lstm_loss_history.csv
+reports/tables/model_index.csv
+```
 
 ---
 
-### 4.3. Данные
+## 4. P0 status
 
-| ID | Задача | Приоритет | Статус | Владелец | Результат |
-|---|---|---|---|---|---|
-| DATA-001 | Выбрать один MVP-актив | P0 | TODO | Максим + Стас | AAPL / SPY / BTC |
-| DATA-002 | Зафиксировать источник рыночных данных | P0 | TODO | Стас | yfinance / Binance / другое |
-| DATA-003 | Зафиксировать источник текстов | P0 | TODO | Стас | flare-sm-bigdata / другое |
-| DATA-004 | Описать период данных | P0 | TODO | Стас | start/end, число наблюдений |
-| DATA-005 | Описать правила удаления пропусков | P0 | TODO | Стас | cleaning protocol |
-| DATA-006 | Создать итоговую таблицу `date -> features -> target` | P0 | TODO | Стас | parquet/csv |
-| DATA-007 | Сохранить dataset summary | P0 | TODO | Стас | `reports/tables/dataset_summary.csv` |
-
----
-
-### 4.4. Признаки
-
-| ID | Задача | Приоритет | Статус | Владелец | Результат |
-|---|---|---|---|---|---|
-| FEAT-001 | Сделать prices-only признаки | P0 | TODO | Стас | returns, lagged returns, volatility |
-| FEAT-002 | Сделать FinBERT embeddings | P0 | TODO | Стас | embedding columns / np arrays |
-| FEAT-003 | Сделать FinBERT sentiment | P0 | TODO | Стас | sentiment score |
-| FEAT-004 | Сделать простые theoretical text features | P0 | TODO | Максим | uncertainty / attention / event count |
-| FEAT-005 | Проверить временную доступность каждого признака | P0 | TODO | Максим + Стас | no-leakage checklist |
-| FEAT-006 | Сохранить feature groups | P0 | TODO | Стас | `feature_group` mapping |
+| ID | Task | Status | Artifact |
+|---|---|---|---|
+| INBOX-001 | Разобрать замечания научного руководителя | DONE | `reports/ADVISOR_REMARKS_ACTION_PLAN.md` |
+| INBOX-002 | Разобрать `4aapl.ipynb` | DONE | `reports/NOTEBOOK_REVIEW_4AAPL.md` |
+| INBOX-004 | Исправить mismatch AAPL/CSCO | DONE | `notebooks/01_mvp_aapl_check.ipynb` |
+| INBOX-005 | Переписать target на next-day direction | DONE | `docs/METHODOLOGY_MVP.md` |
+| INBOX-006 | Гарантировать временной split | DONE | RUN 03 |
+| INBOX-007 | Добавить validation и baseline | DONE | `reports/tables/metrics.csv` |
+| INBOX-008 | Добавить normalization protocol | DONE | `docs/METHODOLOGY_MVP.md` |
+| INBOX-009 | Проверить `raw_text` и 11 numeric features | DONE | RUN 02/RUN 03 parser fix |
+| INBOX-010 | Подготовить MVP methodology | DONE | `docs/METHODOLOGY_MVP.md` |
+| RUN-001 | Зафиксировать RUN 03 как основной эксперимент | DONE | `reports/PRIMARY_EXPERIMENT.md` |
+| RUN-002 | Написать summary результатов MVP | DONE | `reports/RESULTS_MVP.md` |
 
 ---
 
-### 4.5. Модели
+## 5. Main metrics: RUN 03
 
-| ID | Задача | Приоритет | Статус | Владелец | Результат |
-|---|---|---|---|---|---|
-| MODEL-001 | Majority baseline | P0 | TODO | Стас | accuracy majority |
-| MODEL-002 | Price-only baseline | P0 | TODO | Стас | logistic/RF/XGBoost |
-| MODEL-003 | Text-only / LLM-only baseline | P0 | TODO | Стас | FinBERT-only model |
-| MODEL-004 | Combined model | P0 | TODO | Стас | prices + LLM |
-| MODEL-005 | LSTM model | P1 | TODO | Стас | если успеваем |
-| MODEL-006 | Зафиксировать random seed | P0 | TODO | Стас | reproducibility |
-
----
-
-### 4.6. Оценка качества
-
-| ID | Задача | Приоритет | Статус | Владелец | Результат |
-|---|---|---|---|---|---|
-| EVAL-001 | Посчитать confusion matrix | P0 | TODO | Стас | TP/TN/FP/FN |
-| EVAL-002 | Посчитать accuracy/F1/ROC-AUC | P0 | TODO | Стас | metrics table |
-| EVAL-003 | Сравнить с majority baseline | P0 | TODO | Максим + Стас | честная интерпретация |
-| EVAL-004 | Сравнить feature groups | P0 | TODO | Максим + Стас | ablation table |
-| EVAL-005 | Сохранить результаты | P0 | TODO | Стас | `reports/tables/metrics.csv` |
-| EVAL-006 | Подготовить графики loss train/val | P0 | TODO | Стас | если используется LSTM |
+| Model | Feature group | Accuracy | Balanced accuracy | F1 | ROC-AUC |
+|---|---|---:|---:|---:|---:|
+| Majority | none | 0.532 | 0.500 | 0.694 | 0.500 |
+| Logistic Regression | prices only | 0.410 | 0.400 | 0.502 | 0.379 |
+| Logistic Regression | FinBERT only | 0.550 | 0.529 | 0.667 | 0.512 |
+| Logistic Regression | prices + FinBERT | 0.486 | 0.474 | 0.584 | 0.427 |
+| LSTM | prices + FinBERT | 0.432 | 0.445 | 0.315 | 0.449 |
 
 ---
 
-### 4.7. Текст курсовой / статьи
+## 6. Next tasks
 
-| ID | Задача | Приоритет | Статус | Владелец | Результат |
+Теперь не нужно продолжать тюнинг MVP-модели. Следующий блок — текст работы.
+
+| ID | Task | Priority | Status | Owner | Output |
 |---|---|---|---|---|---|
-| TEXT-001 | Написать постановку задачи | P0 | TODO | Максим | раздел курсовой |
+| TEXT-001 | Написать постановку задачи | P0 | NEXT | Максим | раздел курсовой |
 | TEXT-002 | Написать описание данных | P0 | TODO | Максим + Стас | раздел курсовой |
 | TEXT-003 | Написать описание признаков | P0 | TODO | Максим | раздел курсовой |
 | TEXT-004 | Написать описание моделей | P0 | TODO | Стас | раздел курсовой |
 | TEXT-005 | Написать протокол эксперимента | P0 | TODO | Максим + Стас | раздел курсовой |
 | TEXT-006 | Написать результаты | P0 | TODO | Максим + Стас | раздел курсовой |
-| TEXT-007 | Исправить bibliography | P0 | TODO | Максим + Стас | нормальный список литературы |
+| TEXT-007 | Исправить bibliography | P0 | TODO | Максим + Стас | bibliography |
+| REPO-001 | Синхронизировать локальный git без тяжёлых файлов | P0 | TODO | Максим | clean local repo |
 
 ---
 
-## 5. P1 — задачи для хорошей версии
+## 7. Решения
 
-| ID | Задача | Приоритет | Статус | Владелец | Результат |
-|---|---|---|---|---|---|
-| P1-001 | Добавить несколько активов | P1 | TODO | Антон + Стас | AAPL + SPY + BTC |
-| P1-002 | Добавить несколько горизонтов | P1 | TODO | Антон + Стас | 1d / 5d / 10d |
-| P1-003 | Добавить XGBoost | P1 | TODO | Стас | сильный tabular baseline |
-| P1-004 | Добавить rolling split | P1 | TODO | Стас | несколько хронологических разбиений |
-| P1-005 | Добавить statistical significance | P1 | TODO | Максим | тест различий качества |
-| P1-006 | Добавить feature importance | P1 | TODO | Максим + Стас | SHAP / permutation |
+| Дата | Решение | Причина |
+|---|---|---|
+| 2026-06-24 | MVP делаем на одном активе | нужно быстро получить воспроизводимый результат |
+| 2026-06-24 | LLM используется как feature generator | это соответствует теме проекта |
+| 2026-06-25 | RUN 03 фиксируется как основной MVP-run | split date-safe, validation/test достаточно крупные |
+| 2026-06-25 | Переходим от тюнинга модели к тексту | результат уже интерпретируемый, дальнейший тюнинг не нужен для MVP |
 
 ---
 
-## 6. P2 — если останется время
+## 8. Формулировка вывода
 
-| ID | Задача | Приоритет | Статус | Владелец | Результат |
-|---|---|---|---|---|---|
-| P2-001 | Добавить GPT-generated features | P2 | TODO | Стас | GPT sentiment/topics/events |
-| P2-002 | Добавить topic extraction | P2 | TODO | Максим + Стас | topic intensity |
-| P2-003 | Добавить uncertainty index | P2 | TODO | Максим | uncertainty features |
-| P2-004 | Добавить несколько датасетов | P2 | TODO | Антон | crypto / FX / indices |
-| P2-005 | Сделать полноценный пакет `src/` | P2 | TODO | Максим + Стас | production-like repo |
+Рабочий вывод для курсовой:
 
----
-
-## 7. Разделение по людям
-
-### Максим
-
-Фокус: методология, теоретические признаки, контроль leakage, текст курсовой, интерпретация результатов, task tracker.
-
-Текущие P0:
-
-- METH-001–007;
-- FEAT-004–005;
-- EVAL-003–004;
-- TEXT-001–003, TEXT-005–007;
-- INBOX-010–011.
-
-### Стас
-
-Фокус: notebook/code, FinBERT, embeddings, модели, метрики, воспроизводимость.
-
-Текущие P0:
-
-- CODE-007;
-- DATA-002–007;
-- FEAT-001–003, FEAT-006;
-- MODEL-001–006;
-- EVAL-001–002, EVAL-005–006;
-- INBOX-004–008.
-
-### Антон
-
-Фокус: статьи, датасеты, таргеты, горизонты, доступность данных.
-
-Текущие P0:
-
-- уточнить, какие датасеты реально можно использовать;
-- отдать таблицу таргетов и горизонтов;
-- помочь выбрать MVP-актив/датасет.
-
----
-
-## 8. Шаблон новой задачи
-
-```markdown
-### TASK-XXX — краткое название
-
-- Статус: TODO
-- Приоритет: P0 / P1 / P2
-- Владелец: Максим / Стас / Антон
-- Блок: SCOPE / METH / CODE / REPO / DATA / FEAT / MODEL / EVAL / TEXT
-- Зависит от: TASK-YYY или нет
-- Вход: что нужно иметь до начала
-- Результат: что должно появиться после выполнения
-- Definition of Done:
-  - [ ] пункт 1
-  - [ ] пункт 2
-  - [ ] пункт 3
-- Комментарий:
+```text
+В рамках MVP-эксперимента на AAPL признаки, извлечённые из финансовых текстов с помощью FinBERT, не продемонстрировали устойчивой добавочной предсказательной силы. FinBERT-only logistic regression немного превысила majority baseline по accuracy, однако ROC-AUC остался близким к 0.5, а объединение рыночных и текстовых признаков не улучшило качество прогноза.
 ```
-
----
-
-## 9. Входящие задачи
-
-### INBOX-001 — разобрать замечания к курсовой Стаса
-
-- Статус: DONE
-- Приоритет: P0
-- Владелец: Максим
-- Блок: METH / TEXT
-- Зависит от: нет
-- Вход: `Федоров_Станислав_замечания_2026_06_23.pdf`
-- Результат: таблица замечание → действие → задача
-- Definition of Done:
-  - [x] Все 10 замечаний разложены по категориям.
-  - [x] Для каждого замечания есть действие.
-  - [x] Для каждого действия есть task ID.
-
-### INBOX-002 — разобрать `4aapl.ipynb`
-
-- Статус: DONE
-- Приоритет: P0
-- Владелец: Максим
-- Блок: CODE
-- Зависит от: нет
-- Вход: `4aapl.ipynb`
-- Результат: карта notebook и список мест, где надо править
-- Definition of Done:
-  - [x] Найдена ячейка с target.
-  - [x] Найдена ячейка с split.
-  - [x] Найдена ячейка со scaler.
-  - [x] Найдены LLM features.
-  - [x] Найдены leakage-риски.
-
-### INBOX-003 — синхронизировать локальный git и GitHub
-
-- Статус: TODO
-- Приоритет: P0
-- Владелец: Максим
-- Блок: REPO
-- Зависит от: нет
-- Вход: локальный репозиторий и remote `origin`
-- Результат: локальная ветка корректно связана с `origin/master`
-- Definition of Done:
-  - [ ] `git status` чистый или понятный
-  - [ ] `git branch -vv` показывает связь с `origin/master`
-  - [ ] `git pull` работает без ошибки unrelated histories
-  - [ ] `PROJECT_TASKS.md` есть в репозитории
-
-### INBOX-004 — исправить mismatch AAPL/CSCO
-
-- Статус: TODO
-- Приоритет: P0
-- Владелец: Стас
-- Блок: CODE / DATA
-- Зависит от: CODE-001
-- Вход: `4aapl.ipynb`
-- Результат: цены скачиваются для того же тикера, по которому фильтруются тексты
-- Definition of Done:
-  - [ ] `ticker = "aapl"` используется единообразно
-  - [ ] `yf.download(ticker.upper(), ...)`
-  - [ ] в summary явно указан тикер `AAPL`
-
-### INBOX-005 — переписать target на next-day direction
-
-- Статус: TODO
-- Приоритет: P0
-- Владелец: Максим + Стас
-- Блок: METH / CODE
-- Зависит от: METH-001, CODE-002
-- Вход: цены AAPL
-- Результат: target соответствует формуле `y_t = 1{Close_{t+1} > Close_t}`
-- Definition of Done:
-  - [ ] target считается через `shift(-1)`
-  - [ ] последняя строка без будущей цены удаляется
-  - [ ] в README/методологии записана формула target
-
-### INBOX-006 — гарантировать временной split
-
-- Статус: TODO
-- Приоритет: P0
-- Владелец: Стас
-- Блок: DATA / MODEL
-- Зависит от: DATA-006
-- Вход: таблица `date -> features -> target`
-- Результат: train/validation/test идут строго по времени
-- Definition of Done:
-  - [ ] данные отсортированы по `decision_date`
-  - [ ] нет пересечения дат между train/val/test
-  - [ ] split описан в процентах или по датам
-
-### INBOX-007 — добавить validation и baseline
-
-- Статус: TODO
-- Приоритет: P0
-- Владелец: Стас
-- Блок: MODEL / EVAL
-- Зависит от: INBOX-006
-- Вход: готовая таблица признаков
-- Результат: есть majority baseline, price-only baseline и validation loss
-- Definition of Done:
-  - [ ] majority baseline посчитан
-  - [ ] price-only logistic regression или RF посчитан
-  - [ ] validation set используется для выбора эпохи/модели
-  - [ ] результаты сохранены в `reports/tables/metrics.csv`
-
-### INBOX-008 — добавить normalization protocol
-
-- Статус: TODO
-- Приоритет: P0
-- Владелец: Стас
-- Блок: FEAT / MODEL
-- Зависит от: INBOX-006
-- Вход: numeric features
-- Результат: scaler fit только на train
-- Definition of Done:
-  - [ ] scaler обучается только на train
-  - [ ] val/test только transform
-  - [ ] embedding features и numeric features обрабатываются раздельно или явно описано почему нет
-
-### INBOX-009 — проверить состав `raw_text` и 11 numeric features
-
-- Статус: TODO
-- Приоритет: P0
-- Владелец: Максим + Стас
-- Блок: DATA / FEAT
-- Зависит от: CODE-003
-- Вход: пример строки из `TheFinAI/flare-sm-bigdata`
-- Результат: понятно, какие именно 11 числовых признаков попадают в модель
-- Definition of Done:
-  - [ ] распарсен header таблицы из `raw_text`
-  - [ ] каждому числовому признаку дано имя
-  - [ ] проверено, что признаки не используют будущие цены
-
-### INBOX-010 — подготовить `docs/METHODOLOGY_MVP.md`
-
-- Статус: NEXT
-- Приоритет: P0
-- Владелец: Максим + Стас
-- Блок: METH / TEXT
-- Зависит от: METH-001–007, CODE-001–006
-- Вход: `reports/ADVISOR_REMARKS_ACTION_PLAN.md`, `reports/NOTEBOOK_REVIEW_4AAPL.md`
-- Результат: короткий документ с формальной постановкой MVP-эксперимента
-- Definition of Done:
-  - [ ] указана формула target `y_t`
-  - [ ] указан горизонт прогноза
-  - [ ] указана временная шкала признаков
-  - [ ] описан train/validation/test split
-  - [ ] описан scaler protocol
-  - [ ] перечислены baseline-модели и метрики
-
-### INBOX-011 — подготовить `reports/BIBLIOGRAPHY_FIX_LIST.md`
-
-- Статус: TODO
-- Приоритет: P0
-- Владелец: Максим + Стас
-- Блок: TEXT / LIT
-- Зависит от: INBOX-001
-- Вход: замечание 9, текущий список литературы
-- Результат: список обязательных первоисточников и записей, которые надо проверить
-- Definition of Done:
-  - [ ] добавлены первоисточники LSTM, Transformer, BERT, FinBERT
-  - [ ] добавлена ссылка на используемый датасет
-  - [ ] найден и удалён дубль [9]/[13]
-  - [ ] для современных статей проверены DOI/URL
-
-### INBOX-012 — решить конфликт локального репозитория и убрать тяжёлые объекты
-
-- Статус: TODO
-- Приоритет: P0
-- Владелец: Максим
-- Блок: REPO
-- Зависит от: INBOX-003
-- Вход: локальный вывод `git status`, `git count-objects`, список тяжёлых объектов
-- Результат: локальная история не пытается пушить гигабайтные файлы
-- Definition of Done:
-  - [ ] определены файлы, из-за которых push весит ~1.76 GiB
-  - [ ] `.venv/`, datasets, checkpoints и крупные outputs исключены из git
-  - [ ] при необходимости история очищена через `git filter-repo` или репозиторий пересобран
-  - [ ] `git push` проходит без HTTP 408
-
----
-
-## 10. Журнал решений
-
-| Дата | Решение | Почему | Последствие |
-|---|---|---|---|
-| 2026-06-24 | Вести проект через один task tracker `PROJECT_TASKS.md` | минимальные сроки, проще контроль | все новые задачи добавляются сюда |
-| 2026-06-24 | Сначала закрываем P0-методологию | замечания научного руководителя касаются target/leakage/baseline | код не расширяем до фиксации постановки |
-| 2026-06-24 | MVP делаем на одном активе | много датасетов распыляют работу | расширение только после рабочего pipeline |
-| 2026-06-24 | LLM используется как feature generator, не как direct forecaster | соответствует общей идее проекта | модели прогнозирования остаются отдельным блоком |
-| 2026-06-24 | Для скорости чиним через чистый notebook `01_mvp_aapl_check.ipynb` | полная модульная архитектура дольше | перенос в `src/` делаем после MVP |
-| 2026-06-25 | Следующий критический артефакт — `docs/METHODOLOGY_MVP.md` | замечания 1, 2, 5, 6, 7, 8 блокируют валидность эксперимента | INBOX-010 переведён в NEXT |
-
----
-
-## 11. Журнал выполненных задач
-
-| Дата | ID | Что сделано | Артефакт |
-|---|---|---|---|
-| 2026-06-24 | TRACKER-001 | создан файл контроля проекта | `PROJECT_TASKS.md` |
-| 2026-06-24 | INBOX-002 / CODE-001–006 | статический разбор `4aapl.ipynb`: target, split, features, leakage-риски | `reports/NOTEBOOK_REVIEW_4AAPL.md` |
-| 2026-06-25 | INBOX-001 | замечания научного руководителя разложены в план действий | `reports/ADVISOR_REMARKS_ACTION_PLAN.md` |
