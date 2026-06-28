@@ -3,13 +3,10 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T2A]{fontenc}
-\usepackage[warn]{mathtext}
 \usepackage[english,russian]{babel}
 \usepackage{indentfirst}
 \usepackage{misccorr}
 \usepackage{graphicx}
-\usepackage[compatibility=false]{caption}
-\usepackage{subcaption}
 \usepackage{soul}
 \usepackage{multirow}
 \usepackage{ltxtable}
@@ -20,6 +17,10 @@
 \usepackage{amssymb}
 \usepackage{booktabs}
 \usepackage{fancyvrb}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,shapes.geometric}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \usepackage[unicode=true,pdfencoding=auto]{hyperref}
 
 \numberwithin{equation}{section}
@@ -49,8 +50,8 @@
 \vspace{2cm}
 \Large
 Курсовая работа на тему\\
-\LARGE{\textbf{«Влияние LLM-сгенерированных признаков на прогнозирование финансовых временных рядов»}}\\[.4em]
-{\textbf{«The impact of LLM-generated features on financial time series forecasting»}}\\[.4em]
+{\LARGE\bfseries «Влияние LLM-сгенерированных признаков на прогнозирование финансовых временных рядов»}\\[.4em]
+{\bfseries «The impact of LLM-generated features on financial time series forecasting»}\\[.4em]
 \vspace{1cm}
 \normalsize
 \begin{flushright}
