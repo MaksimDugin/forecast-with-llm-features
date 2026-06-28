@@ -1,0 +1,229 @@
+\appendix
+\section{Приложение. Воспроизводимость эксперимента}
+
+Данное приложение фиксирует технические параметры эксперимента, использованные файлы и артефакты RUN 03. Цель приложения --- сделать экспериментальную часть воспроизводимой: читатель должен понимать, какие данные, признаки, модели и результаты использовались при формировании выводов курсовой работы.
+
+\subsection{Структура проекта}
+
+Код и материалы эксперимента хранятся в репозитории:
+
+\begin{Verbatim}[fontsize=\small]
+MaksimDugin/forecast-with-llm-features
+\end{Verbatim}
+
+Ключевые элементы проекта приведены в таблице.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ll}
+\toprule
+Путь & Назначение \\
+\midrule
+\texttt{notebooks/} & Jupyter notebooks для подготовки данных и запуска моделей \\
+\texttt{reports/} & Markdown-отчёты по экспериментам и результатам \\
+\texttt{docs/} & Методологические заметки \\
+\texttt{coursework\_latex/} & LaTeX-версия текста курсовой \\
+\texttt{coursework\_latex/sections/} & Отдельные LaTeX-разделы курсовой \\
+\bottomrule
+\end{tabular}
+\caption{Основная структура проекта}
+\end{table}
+
+Для текста курсовой используются следующие LaTeX-файлы:
+
+\begin{Verbatim}[fontsize=\small]
+coursework_latex/main_msu_template.tex
+coursework_latex/sections/00_introduction.tex
+coursework_latex/sections/01_literature_review.tex
+coursework_latex/sections/02_experiment_setup.tex
+coursework_latex/sections/02_3_features.tex
+coursework_latex/sections/02_4_methodology.tex
+coursework_latex/sections/02_5_models.tex
+coursework_latex/sections/02_6_results.tex
+coursework_latex/sections/02_7_interpretation_limitations.tex
+coursework_latex/sections/03_conclusion.tex
+coursework_latex/sections/04_appendix_reproducibility.tex
+coursework_latex/references_draft.bib
+\end{Verbatim}
+
+\subsection{Параметры основной экспериментальной постановки}
+
+Основной эксперимент в тексте обозначается как RUN 03. Он используется в качестве итогового MVP-запуска, поскольку в нём исправлены ключевые методологические проблемы: используется хронологическое разбиение без пересечения дат, признаки согласованы с задачей прогноза, а оценка проводится на отдельном test subset.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ll}
+\toprule
+Параметр & Значение \\
+\midrule
+Актив & AAPL \\
+Частота данных & дневная \\
+Горизонт прогноза & 1 торговый день \\
+Тип задачи & бинарная классификация \\
+Целевая переменная & $y_t = \mathbf{1}\{Close_{t+1} > Close_t\}$ \\
+Текстовый лаг & $text \leq t-1$ \\
+Модель embeddings & \texttt{ProsusAI/finbert} \\
+Размерность embedding & 768 \\
+Число рыночных признаков & 11 \\
+Число наблюдений & 1578 \\
+Период данных & 2020-04-01 --- 2020-09-30 \\
+Split & \texttt{chronological\_row\_balanced\_by\_decision\_date} \\
+\bottomrule
+\end{tabular}
+\caption{Параметры RUN 03}
+\end{table}
+
+Целевая переменная задаётся формулой:
+
+\[
+y_t = \mathbf{1}\{Close_{t+1} > Close_t\}.
+\]
+
+Рыночный вектор признаков имеет вид:
+
+\[
+p_t \in \mathbb{R}^{11}.
+\]
+
+FinBERT embedding имеет вид:
+
+\[
+e_t = FinBERT(text_t) \in \mathbb{R}^{768}.
+\]
+
+Объединённый вектор признаков задаётся как
+
+\[
+x_t = [p_t;e_t] \in \mathbb{R}^{779}.
+\]
+
+\subsection{Разбиение данных}
+
+В RUN 03 используется хронологическое разбиение по дате принятия решения. Это означает, что train, validation и test не пересекаются по датам. Такое разбиение снижает риск утечки информации между близкими по времени наблюдениями.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lrrl}
+\toprule
+Подвыборка & Наблюдения & Уникальные даты & Период \\
+\midrule
+Train & 1104 & 52 & 2020-04-01 --- 2020-06-15 \\
+Validation & 252 & 10 & 2020-06-16 --- 2020-06-29 \\
+Test & 222 & 55 & 2020-06-30 --- 2020-09-30 \\
+\bottomrule
+\end{tabular}
+\caption{Разбиение данных в RUN 03}
+\end{table}
+
+Отсутствие пересечения дат между подвыборками является важным условием корректной проверки. Формально для множеств дат выполняется:
+
+\[
+D_{train} \cap D_{val} = \varnothing,
+\]
+
+\[
+D_{train} \cap D_{test} = \varnothing,
+\]
+
+\[
+D_{val} \cap D_{test} = \varnothing.
+\]
+
+\subsection{Группы признаков}
+
+В эксперименте сравниваются три группы признаков:
+
+\begin{enumerate}
+    \item \texttt{prices-only}: только рыночные признаки;
+    \item \texttt{FinBERT-only}: только текстовые embedding-признаки;
+    \item \texttt{prices + FinBERT}: объединение рыночных и текстовых признаков.
+\end{enumerate}
+
+Список рыночных признаков:
+
+\begin{Verbatim}[fontsize=\small]
+open, high, low, close, adj-close,
+inc-5, inc-10, inc-15, inc-20, inc-25, inc-30
+\end{Verbatim}
+
+Логика проверки признаков формализуется через разность качества:
+
+\[
+\Delta_{text}^{M} = M(X_{combined}) - M(X_{price}),
+\]
+
+где $M$ --- выбранная метрика качества. Если $\Delta_{text}^{M}>0$, то добавление текстовых признаков улучшает результат относительно рыночного baseline по метрике $M$. Если $\Delta_{text}^{M}\leq 0$, то добавочная предсказательная сила текстовых признаков по данной метрике не подтверждается.
+
+\subsection{Модели и метрики}
+
+В RUN 03 используются следующие модели:
+
+\begin{enumerate}
+    \item majority baseline;
+    \item logistic regression на \texttt{prices-only};
+    \item logistic regression на \texttt{FinBERT-only};
+    \item logistic regression на \texttt{prices + FinBERT};
+    \item LSTM на \texttt{prices + FinBERT}.
+\end{enumerate}
+
+Качество оценивается на test subset. Используются accuracy, balanced accuracy, precision, recall, F1-score, ROC-AUC и confusion matrix.
+
+Основные формулы метрик:
+
+\[
+Accuracy = \frac{TP + TN}{TP + TN + FP + FN},
+\]
+
+\[
+Balanced\ Accuracy = \frac{1}{2}\left(\frac{TP}{TP+FN}+\frac{TN}{TN+FP}\right),
+\]
+
+\[
+Precision = \frac{TP}{TP + FP}, \qquad Recall = \frac{TP}{TP + FN},
+\]
+
+\[
+F1 = 2 \cdot \frac{Precision \cdot Recall}{Precision + Recall}.
+\]
+
+\subsection{Итоговые артефакты RUN 03}
+
+Для воспроизводимости результатов используются следующие артефакты:
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ll}
+\toprule
+Файл & Содержание \\
+\midrule
+\texttt{metrics.csv} & итоговые метрики моделей \\
+\texttt{confusion\_matrix.csv} & confusion matrix для моделей \\
+\texttt{predictions.csv} & предсказания моделей на test subset \\
+\texttt{dataset\_summary.csv} & параметры датасета и split \\
+\texttt{model\_index.csv} & индексы train/validation/test \\
+\texttt{lstm\_loss\_history.csv} & динамика train/validation loss для LSTM \\
+\bottomrule
+\end{tabular}
+\caption{Артефакты, используемые для проверки результатов}
+\end{table}
+
+\subsection{Контрольный чек-лист воспроизводимости}
+
+Для корректного повторения эксперимента необходимо проверить следующие условия:
+
+\begin{enumerate}
+    \item целевая переменная строится через $Close_{t+1}$ и $Close_t$;
+    \item последняя строка без будущего $Close_{t+1}$ удаляется;
+    \item данные сортируются по дате принятия решения;
+    \item train, validation и test не пересекаются по датам;
+    \item текстовые признаки берутся с лагом $text \leq t-1$;
+    \item scaler обучается только на train subset;
+    \item validation и test не используются при обучении scaler;
+    \item метрики считаются только на test subset;
+    \item результаты сравниваются не только по accuracy, но и по balanced accuracy, F1 и ROC-AUC;
+    \item вывод формулируется через влияние групп признаков, а не через качество одной модели.
+\end{enumerate}
+
+\subsection{Краткий вывод по воспроизводимости}
+
+Воспроизводимая часть эксперимента фиксирует не только итоговые значения метрик, но и способ построения признаков, таргета, split и preprocessing. Это важно, поскольку в задачах финансового прогнозирования небольшие нарушения временного порядка или preprocessing могут привести к завышенной оценке качества. Поэтому приложение является частью методологического контроля: оно показывает, какие именно условия должны быть выполнены, чтобы результаты RUN 03 можно было интерпретировать как проверку влияния FinBERT-generated features на прогноз.
