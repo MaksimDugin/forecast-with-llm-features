@@ -20,7 +20,7 @@ y_t = \mathbf{1}\{Close_{t+1} > Close_t\}.
 
 Для контроля утечки данных используется хронологическое разбиение по дате принятия решения. Одна и та же дата не может попадать одновременно в train, validation и test. Основной запуск RUN 03 использует split \texttt{chronological\_row\_balanced\_by\_decision\_date}.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \begin{tabular}{lrrl}
 \toprule
