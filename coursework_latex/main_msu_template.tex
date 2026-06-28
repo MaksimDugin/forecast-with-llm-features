@@ -1,0 +1,95 @@
+\sloppy
+\documentclass[a4paper,12pt,oneside]{scrartcl}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[warn]{mathtext}
+\usepackage[english,russian]{babel}
+\usepackage{indentfirst}
+\usepackage{misccorr}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{soul}
+\usepackage{fancyhdr}
+\usepackage{multirow}
+\usepackage{ltxtable}
+\usepackage{paralist}
+\usepackage[perpage]{footmisc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{fancyvrb}
+\usepackage{hyperref}
+
+\numberwithin{equation}{section}
+\numberwithin{table}{section}
+\numberwithin{figure}{section}
+
+\begin{document}
+
+\setlength{\abovedisplayskip}{3pt plus 3pt minus 2pt}
+\setlength{\abovedisplayshortskip}{3pt plus 2pt minus 3pt}
+\setlength{\belowdisplayskip}{3pt plus 3pt minus 2pt}
+\setlength{\belowdisplayshortskip}{3pt plus 2pt minus 3pt}
+\setlength{\textfloatsep}{1em plus .4em minus .3em}
+\setlength{\abovecaptionskip}{0.5em plus .4em minus .1em}
+\setlength{\belowcaptionskip}{0.5em plus .4em minus .1em}
+
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{center}
+\LARGE{\textsc{московский государственный университет}} имени \LARGE{\textsc{м.\,в.\,ломоносова}}\\
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.18]{photo/emb.jpg}
+\end{figure}
+\normalsize Механико-математический факультет\\
+\normalsize Кафедра математической теории интеллектуальных систем\\
+\vspace{2cm}
+\Large
+Курсовая работа на тему\\
+\LARGE{\textbf{«Влияние LLM-сгенерированных признаков на прогнозирование финансовых временных рядов»}}\\[.4em]
+{\textbf{«The impact of LLM-generated features on financial time series forecasting»}}\\[.4em]
+\vspace{1cm}
+\normalsize
+\begin{flushright}
+\begin{tabular}{rl}
+\textbf{Выполнил:}\\
+студент 509 группы\\
+кафедры математической теории интеллектуальных систем\\
+Дугин Максим Денисович
+\end{tabular}
+\end{flushright}
+\vspace{0.5cm}
+\begin{flushright}
+\begin{tabular}{rl}
+\textbf{Научный руководитель:}\\
+доцент кафедры \\
+математической теории интеллектуальных систем\\
+Боков Григорий Владимирович
+\end{tabular}
+\end{flushright}
+\vfill
+\vspace{1cm}
+{Москва\\
+2025}
+\end{center}
+\end{titlepage}
+
+\tableofcontents
+\clearpage
+
+\input{sections/00_introduction}
+\input{sections/01_literature_review}
+\input{sections/02_experiment_setup}
+\input{sections/02_3_features}
+\input{sections/02_4_methodology}
+\input{sections/02_5_models}
+\input{sections/02_6_results}
+
+\bibliographystyle{gost2008}
+\bibliography{references_draft}
+
+\end{document}
