@@ -1,0 +1,69 @@
+% Подключать этот файл в main только после локального запуска RUN 04
+% и замены placeholder-таблицы на реальные значения из artifacts/run_04/metrics.csv.
+
+\subsection{Дополнительный эксперимент: ablation признаков и снижение размерности}
+
+Для углубления анализа был проведён дополнительный эксперимент RUN 04. Его цель состоит в том, чтобы проверить, зависит ли вывод о слабой добавочной силе FinBERT-признаков от высокой размерности embedding-пространства и от ограниченного набора рыночных признаков. В RUN 03 объединённый вектор признаков имел размерность
+
+\[
+x_t = [p_t;e_t] \in \mathbb{R}^{779},
+\]
+
+где $p_t \in \mathbb{R}^{11}$ --- рыночные признаки, а $e_t \in \mathbb{R}^{768}$ --- FinBERT embedding. При ограниченном числе наблюдений такая размерность может приводить к переобучению и снижать устойчивость результата. Поэтому в RUN 04 текстовые признаки дополнительно проверяются после снижения размерности методом главных компонент.
+
+Для FinBERT embeddings строятся сжатые представления:
+
+\[
+e_t^{(k)} = PCA_k(e_t), \qquad e_t^{(k)} \in \mathbb{R}^{k}, \qquad k \in \{16,32,64\}.
+\]
+
+PCA обучается только на train subset, после чего то же преобразование применяется к validation и test. Это необходимо для предотвращения утечки информации из будущих периодов в preprocessing.
+
+В RUN 04 сравниваются следующие группы признаков:
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ll}
+\toprule
+Группа & Состав \\
+\midrule
+\texttt{majority} & наиболее частый класс в train \\
+\texttt{previous\_direction} & прогноз $\hat y_t = y_{t-1}$ \\
+\texttt{prices\_raw} & исходные price/inc признаки \\
+\texttt{returns\_rolling} & доходности, rolling mean, rolling volatility, residuals \\
+\texttt{volume\_rolling} & log-volume, relative volume, volume z-score \\
+\texttt{market\_full} & расширенные рыночные признаки \\
+\texttt{finbert\_full} & полный FinBERT embedding \\
+\texttt{finbert\_pca\_k} & PCA-сжатые FinBERT embeddings \\
+\texttt{market\_full\_finbert\_pca\_k} & market features + PCA-сжатые embeddings \\
+\bottomrule
+\end{tabular}
+\caption{Группы признаков в RUN 04}
+\end{table}
+
+Добавочная сила текстовых признаков в этом эксперименте определяется как
+
+\[
+\Delta_{text}^{M}(k) = M(X_{market}, E_k) - M(X_{market}),
+\]
+
+где $M$ --- выбранная метрика качества, $X_{market}$ --- расширенная группа рыночных признаков, а $E_k$ --- PCA-сжатые FinBERT-признаки размерности $k$.
+
+% После запуска RUN 04 заменить таблицу ниже на реальные результаты из artifacts/run_04/metrics.csv.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{llrrrr}
+\toprule
+Model & Feature group & Accuracy & Balanced acc. & F1 & ROC-AUC \\
+\midrule
+PLACEHOLDER & majority & -- & -- & -- & -- \\
+PLACEHOLDER & market\_full & -- & -- & -- & -- \\
+PLACEHOLDER & finbert\_pca\_32 & -- & -- & -- & -- \\
+PLACEHOLDER & market\_full\_finbert\_pca\_32 & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\caption{Результаты RUN 04 после локального запуска}
+\end{table}
+
+После получения результатов RUN 04 необходимо сравнить \texttt{market\_full} с \texttt{market\_full\_finbert\_pca\_k}. Если $\Delta_{text}^{M}(k)>0$ для нескольких метрик, то PCA-сжатые FinBERT-признаки дают добавочную предсказательную силу. Если же улучшение не наблюдается, то вывод RUN 03 усиливается: даже после снижения размерности и расширения рыночного baseline устойчивая добавочная сила текстовых признаков не подтверждается.
