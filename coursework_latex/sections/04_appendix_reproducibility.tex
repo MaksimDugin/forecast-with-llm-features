@@ -1,5 +1,5 @@
-\section*{Приложение A. Воспроизводимость эксперимента}
-\addcontentsline{toc}{section}{Приложение A. Воспроизводимость эксперимента}
+\section*{Приложение A. Воспроизводимость экспериментов}
+\addcontentsline{toc}{section}{Приложение A. Воспроизводимость экспериментов}
 \setcounter{table}{0}
 \setcounter{figure}{0}
 \setcounter{equation}{0}
@@ -7,17 +7,17 @@
 \renewcommand{\thefigure}{A.\arabic{figure}}
 \renewcommand{\theequation}{A.\arabic{equation}}
 
-Данное приложение фиксирует технические параметры эксперимента, использованные файлы и артефакты RUN 03. Цель приложения --- сделать экспериментальную часть воспроизводимой: читатель должен понимать, какие данные, признаки, модели и результаты использовались при формировании выводов курсовой работы.
+Данное приложение фиксирует технические параметры, использованные файлы, артефакты и команды воспроизводимости для трёх экспериментальных блоков: основного эксперимента RUN 03, дополнительного эксперимента 1 RUN 04 и дополнительного эксперимента 2 RUN 05. Цель приложения --- сделать экспериментальную часть проверяемой: читатель должен понимать, какие данные, признаки, модели и результаты использовались при формировании выводов курсовой работы.
 
 \subsection*{Структура проекта}
 
-Код и материалы эксперимента хранятся в репозитории:
+Код и материалы экспериментов хранятся в репозитории:
 
 \begin{Verbatim}[fontsize=\small]
 MaksimDugin/forecast-with-llm-features
 \end{Verbatim}
 
-Ключевые элементы проекта приведены в таблице.
+Ключевые элементы проекта приведены в таблице~\ref{tab:appendix_project_structure}.
 
 \begin{table}[htbp]
 \centering
@@ -25,14 +25,17 @@ MaksimDugin/forecast-with-llm-features
 \toprule
 Путь & Назначение \\
 \midrule
-\texttt{notebooks/} & Jupyter notebooks для подготовки данных и запуска моделей \\
-\texttt{reports/} & Markdown-отчёты по экспериментам и результатам \\
-\texttt{docs/} & Методологические заметки \\
+\texttt{notebooks/} & Jupyter notebooks для подготовки данных и запуска экспериментов \\
+\texttt{experiments/} & Python scripts для воспроизводимых запусков \\
+\texttt{artifacts/} & выходные таблицы, метрики, предсказания и служебные файлы \\
+\texttt{reports/} & Markdown-отчёты по данным и результатам \\
+\texttt{docs/} & методологические заметки \\
 \texttt{coursework\_latex/} & LaTeX-версия текста курсовой \\
-\texttt{coursework\_latex/sections/} & Отдельные LaTeX-разделы курсовой \\
+\texttt{coursework\_latex/sections/} & отдельные LaTeX-разделы курсовой \\
 \bottomrule
 \end{tabular}
 \caption{Основная структура проекта}
+\label{tab:appendix_project_structure}
 \end{table}
 
 Для текста курсовой используются следующие LaTeX-файлы:
@@ -46,15 +49,33 @@ coursework_latex/sections/02_3_features.tex
 coursework_latex/sections/02_4_methodology.tex
 coursework_latex/sections/02_5_models.tex
 coursework_latex/sections/02_6_results.tex
+coursework_latex/sections/02_8_run04_additional_experiment_template.tex
+coursework_latex/sections/02_9_run05_multi_asset_experiment.tex
 coursework_latex/sections/02_7_interpretation_limitations.tex
 coursework_latex/sections/03_conclusion.tex
 coursework_latex/sections/04_appendix_reproducibility.tex
 coursework_latex/references_draft.bib
 \end{Verbatim}
 
-\subsection*{Параметры основной экспериментальной постановки}
+\subsection*{Общая логика воспроизводимости}
 
-Основной эксперимент в тексте обозначается как RUN 03. Он используется в качестве итогового MVP-запуска, поскольку в нём исправлены ключевые методологические проблемы: используется хронологическое разбиение без пересечения дат, признаки согласованы с задачей прогноза, а оценка проводится на отдельном test subset.
+Все эксперименты строятся как проверка групп признаков, а не как соревнование архитектур. Поэтому при воспроизведении важно сохранить не только итоговые модели, но и одинаковый протокол подготовки данных:
+
+\begin{enumerate}
+    \item целевая переменная строится только из будущей цены закрытия и текущей цены закрытия;
+    \item данные сортируются по дате принятия решения;
+    \item обучающая, валидационная и тестовая подвыборки не пересекаются по датам;
+    \item текстовые признаки строятся только из информации, доступной к моменту прогноза;
+    \item scaler, PCA и другие преобразования обучаются только на обучающей подвыборке;
+    \item гиперпараметры и порог классификации выбираются только на валидационной подвыборке;
+    \item тестовая подвыборка используется только для финальной оценки;
+    \item результаты сравниваются не только по accuracy, но и по balanced accuracy, F1 и ROC-AUC;
+    \item вывод формулируется через влияние групп признаков, а не через качество одной модели.
+\end{enumerate}
+
+\subsection*{RUN 03: основной эксперимент AAPL}
+
+Основной эксперимент RUN 03 используется как первичная экспериментальная проверка. Он сравнивает три укрупнённые группы признаков: \texttt{prices-only}, \texttt{FinBERT-only} и \texttt{prices + FinBERT}. Параметры запуска приведены в таблице~\ref{tab:appendix_run03_params}.
 
 \begin{table}[htbp]
 \centering
@@ -73,10 +94,11 @@ coursework_latex/references_draft.bib
 Число рыночных признаков & 11 \\
 Число наблюдений & 1578 \\
 Период данных & 2020-04-01 --- 2020-09-30 \\
-Split & \texttt{chronological\_row\_balanced\_by\_decision\_date} \\
+Разбиение & \texttt{chronological\_row\_balanced\_by\_decision\_date} \\
 \bottomrule
 \end{tabular}
-\caption{Параметры RUN 03}
+\caption{Параметры основного эксперимента RUN 03}
+\label{tab:appendix_run03_params}
 \end{table}
 
 Целевая переменная задаётся формулой:
@@ -85,27 +107,25 @@ Split & \texttt{chronological\_row\_balanced\_by\_decision\_date} \\
 y_t = \mathbf{1}\{Close_{t+1} > Close_t\}.
 \]
 
-Рыночный вектор признаков имеет вид:
+Рыночный вектор признаков имеет вид
 
 \[
-p_t \in \mathbb{R}^{11}.
+p_t \in \mathbb{R}^{11},
 \]
 
-FinBERT embedding имеет вид:
+FinBERT embedding имеет вид
 
 \[
-e_t = FinBERT(text_t) \in \mathbb{R}^{768}.
+e_t = FinBERT(text_t) \in \mathbb{R}^{768},
 \]
 
-Объединённый вектор признаков задаётся как
+а объединённый вектор признаков задаётся как
 
 \[
 x_t = [p_t;e_t] \in \mathbb{R}^{779}.
 \]
 
-\subsection*{Разбиение данных}
-
-В RUN 03 используется хронологическое разбиение по дате принятия решения. Это означает, что train, validation и test не пересекаются по датам. Такое разбиение снижает риск утечки информации между близкими по времени наблюдениями.
+В RUN 03 используется хронологическое разбиение по дате принятия решения. Обучающая, валидационная и тестовая подвыборки не пересекаются по датам.
 
 \begin{table}[htbp]
 \centering
@@ -119,82 +139,61 @@ Test & 222 & 55 & 2020-06-30 --- 2020-09-30 \\
 \bottomrule
 \end{tabular}
 \caption{Разбиение данных в RUN 03}
+\label{tab:appendix_run03_split}
 \end{table}
 
-Отсутствие пересечения дат между подвыборками является важным условием корректной проверки. Формально для множеств дат выполняется:
+\subsection*{RUN 04: расширенный рыночный baseline и PCA}
 
-\[
-D_{train} \cap D_{val} = \varnothing,
-\]
+Дополнительный эксперимент 1 RUN 04 проверяет, сохраняется ли вклад FinBERT embeddings после усиления рыночной базовой модели. Он использует расширенные рыночные признаки, rolling-признаки, volume-based признаки и PCA-сжатые FinBERT embeddings.
 
-\[
-D_{train} \cap D_{test} = \varnothing,
-\]
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ll}
+\toprule
+Параметр & Значение \\
+\midrule
+Актив & AAPL \\
+Источник данных & \texttt{TheFinAI/flare-sm-bigdata} \\
+Частота данных & дневная \\
+Горизонт прогноза & 1 торговый день \\
+Число текстов & 497 \\
+Число наблюдений & 163 \\
+Число уникальных дат & 163 \\
+Период данных & 2020-03-09 --- 2020-10-27 \\
+Текстовое окно & до 10 дней \\
+Текстовый лаг & тексты не позднее $t-1$ \\
+Размерность FinBERT embedding & 768 \\
+PCA-размерности & $k \in \{16,32,64\}$ \\
+\bottomrule
+\end{tabular}
+\caption{Параметры дополнительного эксперимента RUN 04}
+\label{tab:appendix_run04_params}
+\end{table}
 
-\[
-D_{val} \cap D_{test} = \varnothing.
-\]
+Хронологическое разбиение RUN 04 имеет вид:
 
-\subsection*{Группы признаков}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lrrl}
+\toprule
+Подвыборка & Наблюдения & Даты & Период \\
+\midrule
+Train & 114 & 114 & 2020-03-09 --- 2020-08-18 \\
+Validation & 24 & 24 & 2020-08-19 --- 2020-09-22 \\
+Test & 25 & 25 & 2020-09-23 --- 2020-10-27 \\
+\bottomrule
+\end{tabular}
+\caption{Разбиение данных в RUN 04}
+\label{tab:appendix_run04_split}
+\end{table}
 
-В эксперименте сравниваются три группы признаков:
-
-\begin{enumerate}
-    \item \texttt{prices-only}: только рыночные признаки;
-    \item \texttt{FinBERT-only}: только текстовые embedding-признаки;
-    \item \texttt{prices + FinBERT}: объединение рыночных и текстовых признаков.
-\end{enumerate}
-
-Список рыночных признаков:
+Ключевой script для RUN 04:
 
 \begin{Verbatim}[fontsize=\small]
-open, high, low, close, adj-close,
-inc-5, inc-10, inc-15, inc-20, inc-25, inc-30
+experiments/run_04_feature_ablation.py
 \end{Verbatim}
 
-Логика проверки признаков формализуется через разность качества:
-
-\[
-\Delta_{text}^{M} = M(X_{combined}) - M(X_{price}),
-\]
-
-где $M$ --- выбранная метрика качества. Если $\Delta_{text}^{M}>0$, то добавление текстовых признаков улучшает результат относительно рыночного baseline по метрике $M$. Если $\Delta_{text}^{M}\leq 0$, то добавочная предсказательная сила текстовых признаков по данной метрике не подтверждается.
-
-\subsection*{Модели и метрики}
-
-В RUN 03 используются следующие модели:
-
-\begin{enumerate}
-    \item majority baseline;
-    \item logistic regression на \texttt{prices-only};
-    \item logistic regression на \texttt{FinBERT-only};
-    \item logistic regression на \texttt{prices + FinBERT};
-    \item LSTM на \texttt{prices + FinBERT}.
-\end{enumerate}
-
-Качество оценивается на test subset. Используются accuracy, balanced accuracy, precision, recall, F1-score, ROC-AUC и confusion matrix.
-
-Основные формулы метрик:
-
-\[
-Accuracy = \frac{TP + TN}{TP + TN + FP + FN},
-\]
-
-\[
-Balanced\ Accuracy = \frac{1}{2}\left(\frac{TP}{TP+FN}+\frac{TN}{TN+FP}\right),
-\]
-
-\[
-Precision = \frac{TP}{TP + FP}, \qquad Recall = \frac{TP}{TP + FN},
-\]
-
-\[
-F1 = 2 \cdot \frac{Precision \cdot Recall}{Precision + Recall}.
-\]
-
-\subsection*{Итоговые артефакты RUN 03}
-
-Для воспроизводимости результатов используются следующие артефакты:
+Основные выходные артефакты RUN 04:
 
 \begin{table}[htbp]
 \centering
@@ -202,34 +201,164 @@ F1 = 2 \cdot \frac{Precision \cdot Recall}{Precision + Recall}.
 \toprule
 Файл & Содержание \\
 \midrule
-\texttt{metrics.csv} & итоговые метрики моделей \\
-\texttt{confusion\_matrix.csv} & confusion matrix для моделей \\
-\texttt{predictions.csv} & предсказания моделей на test subset \\
-\texttt{dataset\_summary.csv} & параметры датасета и split \\
-\texttt{model\_index.csv} & индексы train/validation/test \\
-\texttt{lstm\_loss\_history.csv} & динамика train/validation loss для LSTM \\
+\texttt{artifacts/run\_04\_load\_dataset/metrics.csv} & итоговые test-метрики по группам признаков \\
+\texttt{artifacts/run\_04\_load\_dataset/validation\_selection.csv} & выбор $C$, порога и конфигурации на validation \\
+\texttt{artifacts/run\_04\_load\_dataset/dataset\_summary.json} & сводка по данным, датам, PCA и размерам групп признаков \\
 \bottomrule
 \end{tabular}
-\caption{Артефакты, используемые для проверки результатов}
+\caption{Основные артефакты RUN 04}
+\label{tab:appendix_run04_artifacts}
 \end{table}
 
-\subsection*{Контрольный чек-лист воспроизводимости}
+Пример запуска script для готового CSV-файла:
 
-Для корректного повторения эксперимента необходимо проверить следующие условия:
+\begin{Verbatim}[fontsize=\small]
+python experiments/run_04_feature_ablation.py \
+  --input path/to/ready_dataset.csv \
+  --output-dir artifacts/run_04_load_dataset \
+  --date-col date \
+  --target-col y \
+  --ticker-col asset \
+  --embedding-prefix finbert_
+\end{Verbatim}
+
+\subsection*{RUN 05: мультиактивная проверка crypto-news}
+
+Дополнительный эксперимент 2 RUN 05 проверяет, сохраняются ли выводы при переходе к другому источнику текстов, другому классу активов и нескольким горизонтам прогноза. В нём используются новости \texttt{crypto-news} и дневные OHLCV-данные Binance.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ll}
+\toprule
+Параметр & Значение \\
+\midrule
+Источник текстов & \texttt{crypto-news} \\
+Источник цен & Binance daily OHLCV \\
+Активы & BNB, BTC, SOL \\
+Горизонты & 1, 3, 7 календарных дней \\
+Текстовые признаки & sentiment-score, sentiment probabilities, text-meta \\
+Рыночная группа & \texttt{market\_full} \\
+Характер эксперимента & exploratory robustness check \\
+\bottomrule
+\end{tabular}
+\caption{Параметры дополнительного эксперимента RUN 05}
+\label{tab:appendix_run05_params}
+\end{table}
+
+Целевая переменная для RUN 05 задаётся как
+
+\[
+y_{t,h}=\mathbf{1}\{Close_{t+h}>Close_t\}, \qquad h \in \{1,3,7\}.
+\]
+
+Покрытие итоговых датасетов после объединения новостей с ценами:
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lrr}
+\toprule
+Актив & Наблюдения & Уникальные даты \\
+\midrule
+BNB & 1873 & 569 \\
+BTC & 6000 & 752 \\
+SOL & 885 & 476 \\
+\bottomrule
+\end{tabular}
+\caption{Покрытие данных в RUN 05}
+\label{tab:appendix_run05_coverage}
+\end{table}
+
+Ключевой notebook для RUN 05:
+
+\begin{Verbatim}[fontsize=\small]
+run05_multi_dataset_pipeline.ipynb
+\end{Verbatim}
+
+Он выполняет следующие шаги:
 
 \begin{enumerate}
-    \item целевая переменная строится через $Close_{t+1}$ и $Close_t$;
-    \item последняя строка без будущего $Close_{t+1}$ удаляется;
-    \item данные сортируются по дате принятия решения;
-    \item train, validation и test не пересекаются по датам;
-    \item текстовые признаки берутся с лагом $text \leq t-1$;
-    \item scaler обучается только на train subset;
-    \item validation и test не используются при обучении scaler;
-    \item метрики считаются только на test subset;
-    \item результаты сравниваются не только по accuracy, но и по balanced accuracy, F1 и ROC-AUC;
-    \item вывод формулируется через влияние групп признаков, а не через качество одной модели.
+    \item загружает \texttt{crypto-news};
+    \item фильтрует новости по активам BNB, BTC и SOL;
+    \item загружает дневные OHLCV-данные Binance;
+    \item строит целевую переменную для горизонтов 1, 3 и 7 дней;
+    \item извлекает FinBERT-derived sentiment-признаки и text-meta признаки;
+    \item формирует готовые CSV-файлы для оценки;
+    \item запускает единый evaluation engine на основе \texttt{experiments/run\_04\_feature\_ablation.py};
+    \item сохраняет итоговые метрики и дельты относительно \texttt{market\_full}.
 \end{enumerate}
+
+Основные выходные артефакты RUN 05:
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ll}
+\toprule
+Файл & Содержание \\
+\midrule
+\texttt{artifacts/run\_05\_multi\_dataset\_pipeline/run05\_run\_log.csv} & статус запуска по активам и горизонтам \\
+\texttt{artifacts/run\_05\_multi\_dataset\_pipeline/run05\_all\_metrics.csv} & все test-метрики по всем конфигурациям \\
+\texttt{artifacts/run\_05\_multi\_dataset\_pipeline/run05\_text\_deltas.csv} & приросты текстовых признаков относительно \texttt{market\_full} \\
+\texttt{artifacts/run\_05\_multi\_dataset\_pipeline/ready\_datasets/} & готовые CSV-файлы для каждого актива и горизонта \\
+\texttt{artifacts/run\_05\_multi\_dataset\_pipeline/run04\_results/} & результаты evaluation engine по каждому запуску \\
+\bottomrule
+\end{tabular}
+\caption{Основные артефакты RUN 05}
+\label{tab:appendix_run05_artifacts}
+\end{table}
+
+\subsection*{Команды воспроизводимости}
+
+Минимальные зависимости для воспроизведения экспериментов:
+
+\begin{Verbatim}[fontsize=\small]
+pip install pandas numpy scikit-learn torch transformers tqdm tabulate kagglehub
+\end{Verbatim}
+
+Для запуска RUN 04 на готовом датасете используется script:
+
+\begin{Verbatim}[fontsize=\small]
+python experiments/run_04_feature_ablation.py \
+  --input path/to/ready_dataset.csv \
+  --output-dir artifacts/run_04_load_dataset \
+  --date-col date \
+  --target-col y \
+  --ticker-col asset \
+  --embedding-prefix finbert_
+\end{Verbatim}
+
+Для RUN 05 основной запуск выполняется из notebook:
+
+\begin{Verbatim}[fontsize=\small]
+run05_multi_dataset_pipeline.ipynb
+\end{Verbatim}
+
+Перед запуском RUN 05 рекомендуется задать отдельную папку для Kaggle cache, чтобы избежать переполнения системного диска:
+
+\begin{Verbatim}[fontsize=\small]
+from pathlib import Path
+import os
+
+KAGGLE_CACHE_DIR = r"D:\kagglehub_cache"
+Path(KAGGLE_CACHE_DIR).mkdir(parents=True, exist_ok=True)
+os.environ["KAGGLEHUB_CACHE"] = KAGGLE_CACHE_DIR
+\end{Verbatim}
+
+Для сборки LaTeX-документа используется корневой файл:
+
+\begin{Verbatim}[fontsize=\small]
+coursework_latex/main_msu_template.tex
+\end{Verbatim}
+
+Команды для локальной сборки:
+
+\begin{Verbatim}[fontsize=\small]
+cd coursework_latex
+pdflatex main_msu_template.tex
+bibtex main_msu_template
+pdflatex main_msu_template.tex
+pdflatex main_msu_template.tex
+\end{Verbatim}
 
 \subsection*{Краткий вывод по воспроизводимости}
 
-Воспроизводимая часть эксперимента фиксирует не только итоговые значения метрик, но и способ построения признаков, таргета, split и preprocessing. Это важно, поскольку в задачах финансового прогнозирования небольшие нарушения временного порядка или preprocessing могут привести к завышенной оценке качества. Поэтому приложение является частью методологического контроля: оно показывает, какие именно условия должны быть выполнены, чтобы результаты RUN 03 можно было интерпретировать как проверку влияния FinBERT-generated features на прогноз.
+Воспроизводимая часть работы фиксирует не только итоговые значения метрик, но и способ построения признаков, целевой переменной, хронологического разбиения и предварительной обработки. Это важно, поскольку в задачах финансового прогнозирования небольшие нарушения временного порядка или обучение preprocessing на будущих данных могут привести к завышенной оценке качества. Поэтому приложение является частью методологического контроля: оно показывает, какие именно условия должны быть выполнены, чтобы результаты можно было интерпретировать как проверку добавочной предсказательной силы LLM/FinBERT-generated features.
