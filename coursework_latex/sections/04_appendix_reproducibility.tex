@@ -9,13 +9,27 @@
 
 Данное приложение фиксирует технические параметры, использованные файлы, артефакты и команды воспроизводимости для трёх экспериментальных блоков: основного эксперимента RUN 03, дополнительного эксперимента 1 RUN 04 и дополнительного эксперимента 2 RUN 05. Цель приложения --- сделать экспериментальную часть проверяемой: читатель должен понимать, какие данные, признаки, модели и результаты использовались при формировании выводов курсовой работы.
 
-\subsection*{Структура проекта}
+\subsection*{Репозиторий и версия вычислений}
 
 Код и материалы экспериментов хранятся в репозитории:
 
 \begin{Verbatim}[fontsize=\small]
-MaksimDugin/forecast-with-llm-features
+https://github.com/MaksimDugin/forecast-with-llm-features
 \end{Verbatim}
+
+Воспроизводимость экспериментов в текущей работе опирается не только на текст курсовой, но и на сохранённые артефакты. Для результатов RUN 05 дополнительно зафиксированы отдельные CSV-файлы со статистической проверкой BNB 1d. Коммиты с добавлением этих артефактов:
+
+\begin{Verbatim}[fontsize=\small]
+e161b59585601b12f7bc60c5aa1ca58cb7e04987
+  artifacts/run_05_multi_dataset_pipeline/run05_bnb_1d_bootstrap_ci.csv
+
+ea0567114499e2ca43779257b09b1fada41dd310
+  artifacts/run_05_multi_dataset_pipeline/run05_bnb_1d_prediction_permutation_summary.csv
+\end{Verbatim}
+
+Текстовые правки после замечаний зафиксированы отдельными коммитами. Для строгого повторения вычислений нужно использовать не только последнюю версию текста, но и конкретные сохранённые CSV-артефакты, перечисленные ниже. Если работа передаётся в архив, рекомендуется сохранить ZIP-архив репозитория вместе с папкой \texttt{artifacts/}.
+
+\subsection*{Структура проекта}
 
 Ключевые элементы проекта приведены в таблице~\ref{tab:appendix_project_structure}.
 
@@ -73,6 +87,45 @@ coursework_latex/references_draft.bib
     \item вывод формулируется через влияние групп признаков, а не через качество одной модели.
 \end{enumerate}
 
+\subsection*{Версии данных, seed и окружение}
+
+Точная версия внешних датасетов и окружения является частью воспроизводимости. Для уже выполненных запусков часть этой информации восстановлена из ноутбуков и артефактов, но не все внешние источники были изначально зафиксированы по commit/revision. Поэтому ниже отдельно указано, что зафиксировано, а что должно быть дополнительно сохранено при полном архивировании эксперимента.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lp{9cm}}
+\toprule
+Компонент & Зафиксированная информация \\
+\midrule
+RUN 04 data & \texttt{TheFinAI/flare-sm-bigdata}; точный dataset revision исходным запуском не сохранён \\
+RUN 05 text data & \texttt{crypto-news}; точный dataset revision исходным запуском не сохранён \\
+RUN 05 prices & Binance daily OHLCV; дата загрузки цен должна фиксироваться при повторном запуске \\
+Model seed & \texttt{random\_state = 42} в \texttt{experiments/run\_04\_feature\_ablation.py} \\
+PCA seed & \texttt{random\_state = 42} \\
+Bootstrap/permutation seed & \texttt{numpy.random.default\_rng(42)} \\
+Bootstrap iterations & 5000 \\
+Permutation iterations & 2000 \\
+Ключевые библиотеки & \texttt{pandas}, \texttt{numpy}, \texttt{scikit-learn}, \texttt{torch}, \texttt{transformers}, \texttt{kagglehub} \\
+\bottomrule
+\end{tabular}
+\caption{Версионность данных и вычислительного окружения}
+\label{tab:appendix_versions}
+\end{table}
+
+Для следующего полного воспроизведения следует сохранить файл с версиями библиотек:
+
+\begin{Verbatim}[fontsize=\small]
+python -V > artifacts/environment_versions.txt
+python - <<'PY' >> artifacts/environment_versions.txt
+import importlib.metadata as md
+for pkg in ["pandas", "numpy", "scikit-learn", "torch", "transformers", "kagglehub"]:
+    try:
+        print(pkg, md.version(pkg))
+    except md.PackageNotFoundError:
+        print(pkg, "NOT_INSTALLED")
+PY
+\end{Verbatim}
+
 \subsection*{RUN 03: основной эксперимент AAPL}
 
 Основной эксперимент RUN 03 используется как первичная экспериментальная проверка. Он сравнивает три укрупнённые группы признаков: \texttt{prices-only}, \texttt{FinBERT-only} и \texttt{prices + FinBERT}. Параметры запуска приведены в таблице~\ref{tab:appendix_run03_params}.
@@ -93,8 +146,10 @@ coursework_latex/references_draft.bib
 Размерность embedding & 768 \\
 Число рыночных признаков & 11 \\
 Число наблюдений & 1578 \\
+Число уникальных дат & 117 \\
 Период данных & 2020-04-01 --- 2020-09-30 \\
 Разбиение & \texttt{chronological\_row\_balanced\_by\_decision\_date} \\
+Тип метрик в основной таблице & row-weighted \\
 \bottomrule
 \end{tabular}
 \caption{Параметры основного эксперимента RUN 03}
@@ -129,18 +184,32 @@ x_t = [p_t;e_t] \in \mathbb{R}^{779}.
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{lrrl}
+\begin{tabular}{lrrr}
 \toprule
-Подвыборка & Наблюдения & Уникальные даты & Период \\
+Подвыборка & Наблюдения & Уникальные даты & Наблюдений на дату \\
 \midrule
-Train & 1104 & 52 & 2020-04-01 --- 2020-06-15 \\
-Validation & 252 & 10 & 2020-06-16 --- 2020-06-29 \\
-Test & 222 & 55 & 2020-06-30 --- 2020-09-30 \\
+Train & 1104 & 52 & 21.23 \\
+Validation & 252 & 10 & 25.20 \\
+Test & 222 & 55 & 4.04 \\
 \bottomrule
 \end{tabular}
-\caption{Разбиение данных в RUN 03}
-\label{tab:appendix_run03_split}
+\caption{Row-level наблюдения и уникальные даты в RUN 03}
+\label{tab:appendix_run03_rows_dates}
 \end{table}
+
+Поскольку RUN 03 содержит несколько row-level наблюдений на одну дату, row-weighted метрики могут давать больший вес датам с большим числом текстов. Для date-weighted проверки каждой дате следует присвоить одинаковый суммарный вес. Если $d(i)$ --- дата строки $i$, а $n_d$ --- число строк для даты $d$, то вес строки можно задать как
+
+\[
+w_i=\frac{1}{n_{d(i)}}.
+\]
+
+Тогда date-weighted accuracy записывается как
+
+\[
+Accuracy_{date}=\frac{1}{|D_{test}|}\sum_{d\in D_{test}}\frac{1}{n_d}\sum_{i:d(i)=d}\mathbf{1}\{\widehat y_i=y_i\}.
+\]
+
+Аналогично можно считать weighted confusion matrix и на её основе date-weighted balanced accuracy, precision, recall и F1. В текущей версии основной таблицы RUN 03 приведены row-weighted метрики; date-weighted проверка указана как необходимый robustness check.
 
 \subsection*{RUN 04: расширенный рыночный baseline и PCA}
 
@@ -164,6 +233,7 @@ Test & 222 & 55 & 2020-06-30 --- 2020-09-30 \\
 Текстовый лаг & тексты не позднее $t-1$ \\
 Размерность FinBERT embedding & 768 \\
 PCA-размерности & $k \in \{16,32,64\}$ \\
+Характер эксперимента & exploratory из-за 25 test-наблюдений и нескольких групп признаков \\
 \bottomrule
 \end{tabular}
 \caption{Параметры дополнительного эксперимента RUN 04}
@@ -298,6 +368,8 @@ run05_multi_dataset_pipeline.ipynb
 \texttt{artifacts/run\_05\_multi\_dataset\_pipeline/run05\_run\_log.csv} & статус запуска по активам и горизонтам \\
 \texttt{artifacts/run\_05\_multi\_dataset\_pipeline/run05\_all\_metrics.csv} & все test-метрики по всем конфигурациям \\
 \texttt{artifacts/run\_05\_multi\_dataset\_pipeline/run05\_text\_deltas.csv} & приросты текстовых признаков относительно \texttt{market\_full} \\
+\texttt{artifacts/run\_05\_multi\_dataset\_pipeline/run05\_bnb\_1d\_bootstrap\_ci.csv} & paired bootstrap intervals для BNB 1d \\
+\texttt{artifacts/run\_05\_multi\_dataset\_pipeline/run05\_bnb\_1d\_prediction\_permutation\_summary.csv} & prediction-level permutation check для BNB 1d \\
 \texttt{artifacts/run\_05\_multi\_dataset\_pipeline/ready\_datasets/} & готовые CSV-файлы для каждого актива и горизонта \\
 \texttt{artifacts/run\_05\_multi\_dataset\_pipeline/run04\_results/} & результаты evaluation engine по каждому запуску \\
 \bottomrule
@@ -361,4 +433,4 @@ pdflatex main_msu_template.tex
 
 \subsection*{Краткий вывод по воспроизводимости}
 
-Воспроизводимая часть работы фиксирует не только итоговые значения метрик, но и способ построения признаков, целевой переменной, хронологического разбиения и предварительной обработки. Это важно, поскольку в задачах финансового прогнозирования небольшие нарушения временного порядка или обучение preprocessing на будущих данных могут привести к завышенной оценке качества. Поэтому приложение является частью методологического контроля: оно показывает, какие именно условия должны быть выполнены, чтобы результаты можно было интерпретировать как проверку добавочной предсказательной силы LLM/FinBERT-generated features.
+Воспроизводимая часть работы фиксирует не только итоговые значения метрик, но и способ построения признаков, целевой переменной, хронологического разбиения и предварительной обработки. Это важно, поскольку в задачах финансового прогнозирования небольшие нарушения временного порядка или обучение preprocessing на будущих данных могут привести к завышенной оценке качества. Текущая версия дополнительно фиксирует ограничения воспроизводимости: часть внешних dataset revisions и точных версий библиотек не была сохранена в исходных запусках, поэтому для полного архивирования эксперимента нужно сохранить ZIP-архив репозитория, папку \texttt{artifacts/}, файл \texttt{environment\_versions.txt} и версии загруженных датасетов.
