@@ -1,0 +1,10 @@
+source,asset,horizon,status,n_rows,n_dates,csv_path,out_dir,error
+crypto_news_binance,BNB,1,ok,1873,569,/content/artifacts/run_05_multi_dataset_pipeline/ready_datasets/crypto_news_binance_BNB_1d.csv,/content/artifacts/run_05_multi_dataset_pipeline/run04_results/crypto_news_binance_BNB_1d,
+crypto_news_binance,BNB,3,ok,1873,569,/content/artifacts/run_05_multi_dataset_pipeline/ready_datasets/crypto_news_binance_BNB_3d.csv,/content/artifacts/run_05_multi_dataset_pipeline/run04_results/crypto_news_binance_BNB_3d,
+crypto_news_binance,BNB,7,ok,1873,569,/content/artifacts/run_05_multi_dataset_pipeline/ready_datasets/crypto_news_binance_BNB_7d.csv,/content/artifacts/run_05_multi_dataset_pipeline/run04_results/crypto_news_binance_BNB_7d,
+crypto_news_binance,BTC,1,ok,6000,752,/content/artifacts/run_05_multi_dataset_pipeline/ready_datasets/crypto_news_binance_BTC_1d.csv,/content/artifacts/run_05_multi_dataset_pipeline/run04_results/crypto_news_binance_BTC_1d,
+crypto_news_binance,BTC,3,ok,6000,752,/content/artifacts/run_05_multi_dataset_pipeline/ready_datasets/crypto_news_binance_BTC_3d.csv,/content/artifacts/run_05_multi_dataset_pipeline/run04_results/crypto_news_binance_BTC_3d,
+crypto_news_binance,BTC,7,ok,6000,752,/content/artifacts/run_05_multi_dataset_pipeline/ready_datasets/crypto_news_binance_BTC_7d.csv,/content/artifacts/run_05_multi_dataset_pipeline/run04_results/crypto_news_binance_BTC_7d,
+crypto_news_binance,SOL,1,ok,885,476,/content/artifacts/run_05_multi_dataset_pipeline/ready_datasets/crypto_news_binance_SOL_1d.csv,/content/artifacts/run_05_multi_dataset_pipeline/run04_results/crypto_news_binance_SOL_1d,
+crypto_news_binance,SOL,3,ok,885,476,/content/artifacts/run_05_multi_dataset_pipeline/ready_datasets/crypto_news_binance_SOL_3d.csv,/content/artifacts/run_05_multi_dataset_pipeline/run04_results/crypto_news_binance_SOL_3d,
+crypto_news_binance,SOL,7,ok,885,476,/content/artifacts/run_05_multi_dataset_pipeline/ready_datasets/crypto_news_binance_SOL_7d.csv,/content/artifacts/run_05_multi_dataset_pipeline/run04_results/crypto_news_binance_SOL_7d,
