@@ -6,7 +6,7 @@
 
 Соотношение числа строк и уникальных дат в основном эксперименте приведено в таблице~\ref{tab:run03_rows_dates}. На тестовой подвыборке 222 наблюдения соответствуют 55 уникальным датам, то есть в среднем около 4.04 наблюдения на дату.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \begin{tabular}{lrrr}
 \toprule
@@ -23,7 +23,7 @@ Test & 222 & 55 & 4.04 \\
 
 Для проверки результата на уровне дат следует либо агрегировать текстовые признаки до одного объекта на дату принятия решения, либо дополнительно считать date-weighted метрики, где каждой дате присваивается одинаковый вес. В текущем разделе приведены row-weighted метрики; поэтому вывод по RUN 03 формулируется осторожно и рассматривается как первичная проверка, а не как окончательное подтверждение эффекта на date-level forecast.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \begin{tabular}{llrrrr}
 \toprule
@@ -40,27 +40,32 @@ LSTM & \texttt{prices + FinBERT} & 0.432 & 0.445 & 0.315 & 0.449 \\
 \label{tab:run03_test_metrics}
 \end{table}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \begin{tikzpicture}
 \begin{axis}[
     xbar,
-    bar width=5pt,
-    width=0.92\textwidth,
-    height=6.4cm,
+    bar width=4.5pt,
+    width=0.88\textwidth,
+    height=5.2cm,
     xmin=0,
     xmax=0.60,
     xlabel={Значение метрики},
+    xlabel style={font=\small},
+    xtick={0,0.1,0.2,0.3,0.4,0.5,0.6},
+    xticklabels={0,0.1,0.2,0.3,0.4,0.5,0.6},
+    scaled x ticks=false,
     ytick={1,2,3,4,5},
     yticklabels={LSTM,Цены+FinBERT,FinBERT,Цены,Частый класс},
     yticklabel style={font=\small},
-    legend style={at={(0.5,-0.18)},anchor=north,legend columns=2},
+    legend style={at={(0.02,0.98)},anchor=north west,legend columns=1,font=\small,fill=white,draw=black},
     nodes near coords,
+    every node near coord/.append style={font=\scriptsize},
     nodes near coords align={horizontal},
     grid=major,
-    grid style={dotted,gray!35}
+    grid style={dotted,gray!30}
 ]
-\addplot[fill=black!25, draw=black] coordinates {(0.432,1) (0.486,2) (0.550,3) (0.410,4) (0.532,5)};
+\addplot[fill=black!20, draw=black] coordinates {(0.432,1) (0.486,2) (0.550,3) (0.410,4) (0.532,5)};
 \addplot[fill=black!55, draw=black] coordinates {(0.445,1) (0.474,2) (0.529,3) (0.400,4) (0.500,5)};
 \legend{Accuracy,Balanced accuracy}
 \end{axis}
@@ -93,7 +98,7 @@ LSTM & \texttt{prices + FinBERT} & 0.432 & 0.445 & 0.315 & 0.449 \\
 
 LSTM-модель использовалась для проверки того, помогает ли последовательная архитектура извлекать сигнал из объединённых признаков \texttt{prices + FinBERT}. Она показала accuracy 0.432, balanced accuracy 0.445, F1 0.315 и ROC-AUC 0.449. Эти значения ниже \texttt{majority baseline} и ниже логистической регрессии на \texttt{FinBERT-only}. Это означает, что усложнение модели не улучшило использование признаков в рамках текущей первичной экспериментальной проверки.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \begin{tabular}{lrrr}
 \toprule
