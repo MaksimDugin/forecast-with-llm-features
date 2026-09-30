@@ -1,0 +1,379 @@
+{
+  "date": "2026-09-30",
+  "scope": "Runtime smoke tests, not paper metrics",
+  "python": "3.12.14",
+  "torch": "2.5.0+cpu",
+  "tests_passed": 19,
+  "ruff": "PASS",
+  "compileall": "PASS",
+  "pip_check": "PASS",
+  "author_checkout": "clean",
+  "fintexts_encoder": {
+    "protocol": "reconstructed-encoder",
+    "model": "sentence-transformers/all-MiniLM-L6-v2",
+    "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "dimension": 384,
+    "normalize_embeddings": false,
+    "pooling": "mean nonempty category vectors per level; author averages levels",
+    "max_seq_length": 256,
+    "source_revision": "6a4ce04ac3f2e8a4ae15a5826e6980b50560eb29",
+    "outputs": [
+      {
+        "ticker": "AAPL",
+        "rows": 1304,
+        "file": "AAPL.parquet",
+        "sha256": "b139ec15357fe7aaa531761a0243c9dab44acfc9d9e9dc9b4c956ddd1124cdc0"
+      }
+    ],
+    "limitations": [
+      "Exact paper SBERT identity unavailable",
+      "Published text may contain future information",
+      "Truncation follows encoder max_seq_length; no new LLM pairing performed"
+    ]
+  },
+  "checks": {
+    "fintexts_12_models": [
+      {
+        "model": "DLinear",
+        "portable_device_fix": false,
+        "metrics": {
+          "scaled_mse": 0.04781511053442955,
+          "scaled_mae": 0.18341375887393951,
+          "persistence_scaled_mse": 0.004619482904672623,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "best_val_mse": 0.033204544335603714,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "8a3280d9c9e5ce5dd521fb7b8640e884a2c92437d290f01f5eb4478b187988cc"
+      },
+      {
+        "model": "PatchTST",
+        "portable_device_fix": false,
+        "metrics": {
+          "scaled_mse": 0.03547381982207298,
+          "scaled_mae": 0.15809638798236847,
+          "persistence_scaled_mse": 0.004619482904672623,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "best_val_mse": 0.03110666386783123,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "2f72d5353c465b22e7078f7d34b38e4016624892b1f891fd25ae20f2d7bf217b"
+      },
+      {
+        "model": "Informer",
+        "portable_device_fix": false,
+        "metrics": {
+          "scaled_mse": 0.048581529408693314,
+          "scaled_mae": 0.18381981551647186,
+          "persistence_scaled_mse": 0.004619482904672623,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "best_val_mse": 0.028892474249005318,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "d0bbb528b18ab5014258a29acacb71c8bc4d8f7a7dcbe2a078fc17e6afebc628"
+      },
+      {
+        "model": "Autoformer",
+        "portable_device_fix": true,
+        "metrics": {
+          "scaled_mse": 2.781977653503418,
+          "scaled_mae": 1.3251209259033203,
+          "persistence_scaled_mse": 0.004619482904672623,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "best_val_mse": 2.6883208751678467,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "6ac6df0e05604aff11a2c2d1f0978599b823a1f0756d31ea8849e651df856218"
+      },
+      {
+        "model": "iTransformer",
+        "portable_device_fix": false,
+        "metrics": {
+          "scaled_mse": 0.03439168259501457,
+          "scaled_mae": 0.1532893031835556,
+          "persistence_scaled_mse": 0.004619482904672623,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "best_val_mse": 0.01857471466064453,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "1675341720bd16fdd4614c83f8be6d98e2e64138f7eda18c6b635fbcc00675e4"
+      },
+      {
+        "model": "Reformer",
+        "portable_device_fix": false,
+        "metrics": {
+          "scaled_mse": 0.04441225156188011,
+          "scaled_mae": 0.17786858975887299,
+          "persistence_scaled_mse": 0.004619482904672623,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "best_val_mse": 0.023518338799476624,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "c40dc5344305d3947aa9682266819e40144ba9140d6346554a45a1c1d38400e3"
+      },
+      {
+        "model": "Crossformer",
+        "portable_device_fix": false,
+        "metrics": {
+          "scaled_mse": 1.2253731489181519,
+          "scaled_mae": 0.9439967274665833,
+          "persistence_scaled_mse": 0.004619482904672623,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "best_val_mse": 2.324899673461914,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "3ef0999a0c09aa5f0b841302a567428d78daa44410e9eb7a2459b57f4165f51d"
+      },
+      {
+        "model": "Transformer",
+        "portable_device_fix": false,
+        "metrics": {
+          "scaled_mse": 0.5003865957260132,
+          "scaled_mae": 0.5971742868423462,
+          "persistence_scaled_mse": 0.004619482904672623,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "best_val_mse": 1.2197399139404297,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "73af3854fbdfd903ddf727b69eefd870648a8e33d462022b83ce40bd10c634c8"
+      },
+      {
+        "model": "FiLM",
+        "portable_device_fix": false,
+        "metrics": {
+          "scaled_mse": 0.034015774726867676,
+          "scaled_mae": 0.16001290082931519,
+          "persistence_scaled_mse": 0.004619482904672623,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "best_val_mse": 0.017630979418754578,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "0c661af3a595d4bc58515ae7fe1b9334bc6be29b9011751b1c6ebb37ee7e90fe"
+      },
+      {
+        "model": "Nonstationary_Transformer",
+        "portable_device_fix": false,
+        "metrics": {
+          "scaled_mse": 0.04576660692691803,
+          "scaled_mae": 0.17714141309261322,
+          "persistence_scaled_mse": 0.004619482904672623,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "best_val_mse": 0.015815408900380135,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "6d3c43b8840b5c2859a62f43fd8069f981614a85c7889bd3f8f0e14758ce6f95"
+      },
+      {
+        "model": "TSMixer",
+        "portable_device_fix": false,
+        "metrics": {
+          "scaled_mse": 0.19448955357074738,
+          "scaled_mae": 0.38659510016441345,
+          "persistence_scaled_mse": 0.004619482904672623,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "best_val_mse": 0.699085533618927,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "e4dfc345dd8b659b1b2cfd6df028d96c9fac857ce88a83009fd6325491c7504e"
+      },
+      {
+        "model": "TiDE",
+        "portable_device_fix": false,
+        "metrics": {
+          "scaled_mse": 0.04127499833703041,
+          "scaled_mae": 0.16548551619052887,
+          "persistence_scaled_mse": 0.004619482904672623,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "best_val_mse": 0.021273965016007423,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "af3cbbfba07db1f6bc0aba0c96d6d3665fe7441fe6ec48eef2c6ab4420cf4968"
+      }
+    ],
+    "finmultitime_5_reconstructed_models": [
+      {
+        "model": "RNN",
+        "metrics": {
+          "scaled_mse": 1.437963604927063,
+          "scaled_mae": 1.1836624145507812,
+          "raw_mse": 24.00471239607866,
+          "raw_mae": 4.836152494548708,
+          "persistence_scaled_mse": 0.030724719166755676,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "8b121966d4c4aaf04814c4b036b660f4099806e41b696982b2b60465f65927ff"
+      },
+      {
+        "model": "LSTM",
+        "metrics": {
+          "scaled_mse": 1.4181609153747559,
+          "scaled_mae": 1.181599736213684,
+          "raw_mse": 23.674771862381647,
+          "raw_mae": 4.827762158584481,
+          "persistence_scaled_mse": 0.030724719166755676,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "ce1e9db4ae422e1f02ffa3abef99e8e425ef8f37bec6444262951d9f5c3e87e6"
+      },
+      {
+        "model": "GRU",
+        "metrics": {
+          "scaled_mse": 1.4354724884033203,
+          "scaled_mae": 1.187117576599121,
+          "raw_mse": 23.959917042535196,
+          "raw_mae": 4.850087520702102,
+          "persistence_scaled_mse": 0.030724719166755676,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "6f799a9b53e4db8b50bfbd6a7917828f57ffae53c37239cfb768cfb0a3e32a67"
+      },
+      {
+        "model": "CNN",
+        "metrics": {
+          "scaled_mse": 0.7654187083244324,
+          "scaled_mae": 0.8601704239845276,
+          "raw_mse": 12.775213910725526,
+          "raw_mae": 3.5143331914763642,
+          "persistence_scaled_mse": 0.030724719166755676,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "eb35fefa941f55efc57be2d50bc16abadbf7bb92068bdc34c40b34f29fafb53c"
+      },
+      {
+        "model": "TimeNetReconstructed",
+        "metrics": {
+          "scaled_mse": 1.1009721755981445,
+          "scaled_mae": 1.0401581525802612,
+          "raw_mse": 18.375483796667773,
+          "raw_mae": 4.249633524400287,
+          "persistence_scaled_mse": 0.030724719166755676,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "smoke_only": true
+        },
+        "checkpoint_sha256": "a0cae6b0d4e3c83ffb16a526401080d98889ff7d14bfe07f31bbfc65f8853562"
+      }
+    ],
+    "fintexts_all_5_text_groups": {
+      "checkpoint_sha256": "ad56083a6746a7ae225dddfd2d1058ae5144b09cf0b8b9d685dac096606676f5",
+      "metrics": {
+        "scaled_mse": 0.047701697796583176,
+        "scaled_mae": 0.18323619663715363,
+        "persistence_scaled_mse": 0.004619482904672623,
+        "test_windows": 32,
+        "selected_epoch": 1,
+        "best_val_mse": 0.033153992146253586,
+        "smoke_only": true
+      }
+    },
+    "finmultitime_news_count_adapter": {
+      "checkpoint_sha256": "092f915cd2cf48f5d3bb365b0dcdc8973257ea098e46e1514743ae729d16b3ca",
+      "metrics": {
+        "scaled_mse": 1.4364622831344604,
+        "scaled_mae": 1.1854472160339355,
+        "raw_mse": 23.99126392081513,
+        "raw_mae": 4.8439933313881705,
+        "persistence_scaled_mse": 0.030724719166755676,
+        "test_windows": 32,
+        "selected_epoch": 1,
+        "smoke_only": true
+      }
+    },
+    "matrix_two_cells_train_only_scaler": {
+      "requested": 2,
+      "completed": 2,
+      "complete": true,
+      "smoke_only": true,
+      "averaging": "Equal seed average within ticker, then equal ticker average; incomplete matrices remain labeled incomplete",
+      "summaries": [
+        {
+          "model": "DLinear",
+          "horizon": 3,
+          "tickers": 1,
+          "metrics": {
+            "scaled_mse": {
+              "mean_across_tickers_after_seed_average": 0.05646686255931854,
+              "population_std_across_tickers": 0.0
+            },
+            "scaled_mae": {
+              "mean_across_tickers_after_seed_average": 0.20465950667858124,
+              "population_std_across_tickers": 0.0
+            },
+            "persistence_scaled_mse": {
+              "mean_across_tickers_after_seed_average": 0.00642368895933032,
+              "population_std_across_tickers": 0.0
+            }
+          }
+        },
+        {
+          "model": "PatchTST",
+          "horizon": 3,
+          "tickers": 1,
+          "metrics": {
+            "scaled_mse": {
+              "mean_across_tickers_after_seed_average": 0.049326732754707336,
+              "population_std_across_tickers": 0.0
+            },
+            "scaled_mae": {
+              "mean_across_tickers_after_seed_average": 0.18652532994747162,
+              "population_std_across_tickers": 0.0
+            },
+            "persistence_scaled_mse": {
+              "mean_across_tickers_after_seed_average": 0.00642368895933032,
+              "population_std_across_tickers": 0.0
+            }
+          }
+        }
+      ],
+      "results": [
+        {
+          "id": "AAPL-DLinear-7-h3",
+          "scaled_mse": 0.05646686255931854,
+          "scaled_mae": 0.20465950667858124,
+          "persistence_scaled_mse": 0.00642368895933032,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "best_val_mse": 0.037541311234235764,
+          "smoke_only": true
+        },
+        {
+          "id": "AAPL-PatchTST-7-h3",
+          "scaled_mse": 0.049326732754707336,
+          "scaled_mae": 0.18652532994747162,
+          "persistence_scaled_mse": 0.00642368895933032,
+          "test_windows": 32,
+          "selected_epoch": 1,
+          "best_val_mse": 0.043278928846120834,
+          "smoke_only": true
+        }
+      ]
+    }
+  },
+  "not_verified": [
+    "Full training and paper table agreement",
+    "Container image build",
+    "Ubuntu 22.04 Python 3.10 runtime",
+    "GPU/server deployment",
+    "Author-identical encoder, seeds and FinMultiTime architecture/splits"
+  ]
+}

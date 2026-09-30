@@ -1,0 +1,39 @@
+{
+  "paper": "fintexts",
+  "tickers": [
+    "AAPL"
+  ],
+  "models": [
+    "DLinear",
+    "PatchTST",
+    "Informer",
+    "Autoformer",
+    "iTransformer",
+    "Reformer",
+    "Crossformer",
+    "Transformer",
+    "FiLM",
+    "Nonstationary_Transformer",
+    "TSMixer",
+    "TiDE"
+  ],
+  "seeds": [
+    7,
+    17,
+    27
+  ],
+  "epochs": 10,
+  "author": ".reproduction-cache/FinTexTS",
+  "prepared": ".reproduction-cache/fintexts-prepared",
+  "prefixes": [
+    "macro",
+    "sector",
+    "targetCompany",
+    "relatedCompany",
+    "filing"
+  ],
+  "scaler": "author-full",
+  "text_weight": 0.1,
+  "note": "Explicit reconstructed seed choices. Expand ticker list to 100; not a complete paper matrix.",
+  "portable_autoformer": true
+}

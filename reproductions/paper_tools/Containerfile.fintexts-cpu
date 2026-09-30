@@ -5,10 +5,10 @@ RUN python3.10 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:${PATH}"
 RUN python -m pip install --no-cache-dir pip==24.3.1
 WORKDIR /opt/paper_tools
-COPY prepare.py run_fintexts.py inputs.lock.json ./
+COPY prepare.py run_fintexts.py inputs.lock.json embed_fintexts.py train_fintexts.py finmultitime.py news_features.py run_matrix.py requirements-workflows.txt author_compat.py ./
 RUN python prepare.py source fintexts --destination /opt/FinTexTS
 RUN python -m pip install --no-cache-dir torch==2.5.0 --index-url https://download.pytorch.org/whl/cpu
-RUN python -m pip install --no-cache-dir -r /opt/FinTexTS/requirements.txt pyarrow 'numpy==1.26.4' 'pandas==2.3.3' 'scikit-learn==1.5.2' 'torch==2.5.0' && python -m pip check && python -m pip freeze > /opt/environment.freeze.txt
+RUN python -m pip install --no-cache-dir -r requirements-workflows.txt && python -m pip check && python -m pip freeze > /opt/environment.freeze.txt
 ENV PYTHONPATH="/opt/FinTexTS:/opt/FinTexTS/forecasting_task"
 RUN python -c "import forecasting_task.run, pyarrow; print('AUTHOR_IMPORTS=PASS')"
 CMD ["python", "/opt/paper_tools/run_fintexts.py", "--help"]

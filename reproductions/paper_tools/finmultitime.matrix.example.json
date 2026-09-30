@@ -1,0 +1,28 @@
+{
+  "paper": "finmultitime",
+  "tickers": [
+    "000001.SZ"
+  ],
+  "models": [
+    "RNN",
+    "LSTM",
+    "GRU",
+    "CNN",
+    "TimeNetReconstructed"
+  ],
+  "seeds": [
+    7,
+    17,
+    27
+  ],
+  "epochs": 100,
+  "horizons": [
+    24,
+    48,
+    96
+  ],
+  "published": ".reproduction-cache/finmultitime-published",
+  "train_end": "2022-01-01",
+  "val_end": "2023-01-01",
+  "note": "Reconstructed price-only HS300 baseline; split dates and seeds are our explicit choices, not recovered author settings."
+}

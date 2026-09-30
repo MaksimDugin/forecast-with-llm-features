@@ -3,3 +3,10 @@
 !prepare.py
 !run_fintexts.py
 !inputs.lock.json
+!embed_fintexts.py
+!train_fintexts.py
+!finmultitime.py
+!news_features.py
+!run_matrix.py
+!requirements-workflows.txt
+!author_compat.py
