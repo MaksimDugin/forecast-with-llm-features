@@ -1,0 +1,64 @@
+{
+  "fintexts": {
+    "paper": "https://arxiv.org/abs/2603.02702v3",
+    "dataset_id": "EXAONE-BI/FinTexTS",
+    "revision": "6a4ce04ac3f2e8a4ae15a5826e6980b50560eb29",
+    "author_repository": "https://github.com/leejaehoon2016/FinTexTS.git",
+    "author_commit": "8aa427de4831b266092c3af9c8a4d536d0e397dc",
+    "files": [
+      {
+        "path": "data/train-00000-of-00004.parquet",
+        "bytes": 72261370,
+        "sha256": "99a7cf2146d7fbbb49456a5d6418c400ceea1c8a2e9e1694667c6e06156dbea5"
+      },
+      {
+        "path": "data/train-00001-of-00004.parquet",
+        "bytes": 76892296,
+        "sha256": "41a7f5bf19427d42fe4515f788ee3891eb3bb1fe86431919597ad0b9815c54b0"
+      },
+      {
+        "path": "data/train-00002-of-00004.parquet",
+        "bytes": 77694327,
+        "sha256": "24e02e0387881f10c21ab38839bec8bd797b6cd267036dab23cf3b6e5b3188e2"
+      },
+      {
+        "path": "data/train-00003-of-00004.parquet",
+        "bytes": 77692947,
+        "sha256": "781151a72a132b098ecd42e6ca1c7fada6c0541b743de02cf24a82a28637ccec"
+      }
+    ]
+  },
+  "finmultitime": {
+    "paper": "https://arxiv.org/abs/2506.05019v2",
+    "dataset_id": "Wenyan0110/Multimodal-Dataset-Image_Text_Table_TimeSeries-for-Financial-Time-Series-Forecasting",
+    "revision": "72d4e97b9acb92651949b8efb22c55676ff633ff",
+    "author_repository": null,
+    "files": [
+      {
+        "path": "text/hs300news_summary.zip",
+        "bytes": 56886812,
+        "sha256": "6f164e8d8eff9bc0803bb577b2c904b6926a081ea259c9f52c76e110de29c866"
+      },
+      {
+        "path": "table/hs300_tabular.zip",
+        "bytes": 59172469,
+        "sha256": "578757f66077000b7cebff7c6093df4c7067a0954052d6cda822b68b2cc0fab6"
+      },
+      {
+        "path": "time_series/HS300_time_series.zip",
+        "bytes": 101014468,
+        "sha256": "ceb178914a5b2dc225af6af2796f6105d7c2bd0fb1fa398394a5e75b3fd226ae"
+      },
+      {
+        "path": "sp500stock_data_description.csv",
+        "bytes": 113687,
+        "sha256": "1763c2d0469fe14daac29eee7ac1773c22f423d5463347af7002805e1b59b79b"
+      },
+      {
+        "path": "hs300stock_data_description.csv",
+        "bytes": 32286,
+        "sha256": "83c00324357c8cd8f336af13ce032242b2fc394af2f338b42d2f593e9eabb8f0"
+      }
+    ]
+  }
+}

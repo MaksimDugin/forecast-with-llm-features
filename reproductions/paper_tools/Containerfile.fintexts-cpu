@@ -1,0 +1,14 @@
+FROM docker.io/library/ubuntu:22.04
+ENV DEBIAN_FRONTEND=noninteractive PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 MPLBACKEND=Agg OMP_NUM_THREADS=4
+RUN apt-get update && apt-get install -y --no-install-recommends python3.10 python3.10-venv ca-certificates git libgomp1 && rm -rf /var/lib/apt/lists/*
+RUN python3.10 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:${PATH}"
+RUN python -m pip install --no-cache-dir pip==24.3.1
+WORKDIR /opt/paper_tools
+COPY prepare.py run_fintexts.py inputs.lock.json ./
+RUN python prepare.py source fintexts --destination /opt/FinTexTS
+RUN python -m pip install --no-cache-dir torch==2.5.0 --index-url https://download.pytorch.org/whl/cpu
+RUN python -m pip install --no-cache-dir -r /opt/FinTexTS/requirements.txt pyarrow 'numpy==1.26.4' 'pandas==2.3.3' 'scikit-learn==1.5.2' 'torch==2.5.0' && python -m pip check && python -m pip freeze > /opt/environment.freeze.txt
+ENV PYTHONPATH="/opt/FinTexTS:/opt/FinTexTS/forecasting_task"
+RUN python -c "import forecasting_task.run, pyarrow; print('AUTHOR_IMPORTS=PASS')"
+CMD ["python", "/opt/paper_tools/run_fintexts.py", "--help"]

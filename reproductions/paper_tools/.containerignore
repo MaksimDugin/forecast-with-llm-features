@@ -1,0 +1,5 @@
+*
+!Containerfile.fintexts-cpu
+!prepare.py
+!run_fintexts.py
+!inputs.lock.json
