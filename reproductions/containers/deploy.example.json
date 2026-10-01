@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "podman": "podman",
+  "connection": "fnspid",
+  "local_cgroups_disabled": true,
+  "ssh": "ssh",
+  "ssh_target": null,
+  "local_output_dir": null,
+  "remote_data_dir": null,
+  "remote_runs_dir": null,
+  "remote_cache_dir": null
+}

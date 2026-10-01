@@ -1,0 +1,208 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Papers: Create local config",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/reproductions/containers/deploy.py",
+        "init-config",
+        "--profile",
+        "${input:paperProfile}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONUNBUFFERED": "1"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": false
+      },
+      "runOptions": {
+        "instanceLimit": 1
+      }
+    },
+    {
+      "label": "Papers: Deploy plan",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/reproductions/containers/deploy.py",
+        "plan",
+        "--profile",
+        "${input:paperProfile}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONUNBUFFERED": "1"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": false
+      },
+      "runOptions": {
+        "instanceLimit": 1
+      }
+    },
+    {
+      "label": "Papers: Build locally",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/reproductions/containers/deploy.py",
+        "build",
+        "--profile",
+        "${input:paperProfile}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONUNBUFFERED": "1"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": false
+      },
+      "runOptions": {
+        "instanceLimit": 1
+      }
+    },
+    {
+      "label": "Papers: Check locally",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/reproductions/containers/deploy.py",
+        "check",
+        "--profile",
+        "${input:paperProfile}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONUNBUFFERED": "1"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": false
+      },
+      "runOptions": {
+        "instanceLimit": 1
+      }
+    },
+    {
+      "label": "Papers: Deploy images over SSH",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/reproductions/containers/deploy.py",
+        "deploy",
+        "--profile",
+        "${input:paperProfile}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONUNBUFFERED": "1"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": false
+      },
+      "runOptions": {
+        "instanceLimit": 1
+      }
+    },
+    {
+      "label": "Papers: Check server images",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/reproductions/containers/deploy.py",
+        "server-check",
+        "--profile",
+        "${input:paperProfile}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONUNBUFFERED": "1"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": false
+      },
+      "runOptions": {
+        "instanceLimit": 1
+      }
+    },
+    {
+      "label": "Papers: Last logs",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/reproductions/containers/deploy.py",
+        "logs",
+        "--profile",
+        "${input:paperProfile}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONUNBUFFERED": "1"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": false
+      },
+      "runOptions": {
+        "instanceLimit": 1
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "paperProfile",
+      "type": "pickString",
+      "description": "Paper profile",
+      "options": [
+        "all",
+        "fnspid",
+        "fintexts",
+        "finmultitime"
+      ],
+      "default": "all"
+    }
+  ]
+}

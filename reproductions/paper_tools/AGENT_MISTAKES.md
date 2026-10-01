@@ -40,3 +40,10 @@ Prevention: derive inputs from input declarations, not all filename-like strings
 Printed an entire large FNSPID recursive tree during discovery, causing output
 truncation. Filter source entries before displaying metadata; store raw responses
 without printing them. The packaging manifest includes only selected source files.
+
+## Attachment path resolution during SSH deployment preparation (2026-10-01)
+
+- Mistake: attempted to read `upload/deploy_project(1).py` relative to the repository checkout.
+- Why it was wrong: the attachment directory belongs to the scratch root, not the Git checkout.
+- Evidence: read-only `sed` returned file-not-found; no files were changed by that command.
+- Prevention rule: use the exact absolute workspace path supplied for attachments, independently of command cwd.

@@ -25,5 +25,18 @@
     "CALF",
     "ChatTime",
     "FTS-Text-MoE"
-  ]
+  ],
+  "ssh_deployment": {
+    "base_revision": "43082b0ceea671911f41da8e12e57dde9b9f0245",
+    "deploy_tests": "16 PASS",
+    "packaging_and_existing_input_tests": "23 PASS",
+    "total_executed_tests": 39,
+    "ruff": "PASS",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "remote_execution": "NOT_RUN: future server parameters unavailable",
+    "full_ml_runtime_suite": "NOT_RUN: model/runtime checks remain separate",
+    "workflow_scope": "local build/check, verified image transfer over SSH, remote environment check",
+    "existing_project_files_modified": false
+  }
 }
