@@ -151,3 +151,10 @@ as-of availability, pooling, gradients всех восстановленных �
 при необходимости установить pytest==8.3.5 ruff==0.11.13 в dev окружение.
 Реальные smoke запуски используют одну эпоху и один batch каждого сплита;
 их метрики показывают работоспособность и не оценивают качество обучения.
+
+## Three server images
+
+See [the three-image Podman workflow](../containers/README.md) for separate FNSPID,
+FinTexTS and FinMultiTime CPU images. FinMultiTime coverage remains five reconstructed
+models; three multimodal paper models are explicitly blocked. Server image/model
+acceptance is pending, independent of earlier local smoke/pilot evidence.

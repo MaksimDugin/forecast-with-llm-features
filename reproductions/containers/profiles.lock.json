@@ -1,0 +1,434 @@
+{
+  "base_image": "docker.io/library/ubuntu:22.04@sha256:b8b6ee6aa931ecd9d0d952abc34dc0e5f7c6a30c6bb71b079fe399fde0329c02",
+  "platform": "linux/amd64",
+  "profiles": {
+    "fnspid": {
+      "source_repository": "https://github.com/Zdong104/FNSPID_Financial_News_Dataset.git",
+      "source_commit": "4054842ec476953b30ee874d4b7e8eea786a21fa",
+      "source_root": "/opt/FNSPID",
+      "files": [
+        {
+          "path": "dataset_test/CNN-for-Time-Series-Prediction/core/CNN_modified_model.py",
+          "git_blob_sha": "0d19da3b4ac773ad4734448b0d5f6daa2b3dae61"
+        },
+        {
+          "path": "dataset_test/CNN-for-Time-Series-Prediction/core/__init__.py",
+          "git_blob_sha": "3cf6a4989f4a86ba907f9538cfe55e612d8b0daf"
+        },
+        {
+          "path": "dataset_test/CNN-for-Time-Series-Prediction/core/data_processor.py",
+          "git_blob_sha": "b3ef8fa20f3da8345bedecd07a0811eff0d030cb"
+        },
+        {
+          "path": "dataset_test/CNN-for-Time-Series-Prediction/core/model.py",
+          "git_blob_sha": "a4ca0a17f79451c6c5a580c3f86c86c24510cff4"
+        },
+        {
+          "path": "dataset_test/CNN-for-Time-Series-Prediction/core/utils.py",
+          "git_blob_sha": "fc14e1cab22472727bd7b4986f2789cbc5dbf177"
+        },
+        {
+          "path": "dataset_test/CNN-for-Time-Series-Prediction/nonsentiment_config.json",
+          "git_blob_sha": "8bcf67085feacde9a50bd871358281369c40d69d"
+        },
+        {
+          "path": "dataset_test/CNN-for-Time-Series-Prediction/run.py",
+          "git_blob_sha": "362484bba999e81af1454fd735d3068958806d7b"
+        },
+        {
+          "path": "dataset_test/CNN-for-Time-Series-Prediction/sentiment_config.json",
+          "git_blob_sha": "b877a3df3cb70d6cdc1cfda9afb2fe31827c36db"
+        },
+        {
+          "path": "dataset_test/GRU-for-Time-Series-Prediction/core/GRU_modified_model.py",
+          "git_blob_sha": "5df10a48935003c6b6c0e09f1e2f71a589386c01"
+        },
+        {
+          "path": "dataset_test/GRU-for-Time-Series-Prediction/core/__init__.py",
+          "git_blob_sha": "c11bdcb072242c51cb817c992a99d37127f8ad73"
+        },
+        {
+          "path": "dataset_test/GRU-for-Time-Series-Prediction/core/data_processor.py",
+          "git_blob_sha": "b3ef8fa20f3da8345bedecd07a0811eff0d030cb"
+        },
+        {
+          "path": "dataset_test/GRU-for-Time-Series-Prediction/core/model.py",
+          "git_blob_sha": "cc3a3ca35eff8070e17bd3fe9fbfee8ca1a35551"
+        },
+        {
+          "path": "dataset_test/GRU-for-Time-Series-Prediction/core/utils.py",
+          "git_blob_sha": "fc14e1cab22472727bd7b4986f2789cbc5dbf177"
+        },
+        {
+          "path": "dataset_test/GRU-for-Time-Series-Prediction/nonsentiment_config.json",
+          "git_blob_sha": "5b07bf61300e7393ac7bd6611ba1c0ee731928e5"
+        },
+        {
+          "path": "dataset_test/GRU-for-Time-Series-Prediction/run.py",
+          "git_blob_sha": "bfbb6aa723a84ee8221d5e8d2feb69ff03a65453"
+        },
+        {
+          "path": "dataset_test/GRU-for-Time-Series-Prediction/sentiment_config.json",
+          "git_blob_sha": "d54fee8ff5f559887eb6c42dd6e78ed020e345e3"
+        },
+        {
+          "path": "dataset_test/LSTM-for-Time-Series-Prediction/core/LSTM_modified_model.py",
+          "git_blob_sha": "e4504d9182d03bf4f02de689680c483d73535ced"
+        },
+        {
+          "path": "dataset_test/LSTM-for-Time-Series-Prediction/core/__init__.py",
+          "git_blob_sha": "d7721ec72ea1500964c8afc90b1d914757406a37"
+        },
+        {
+          "path": "dataset_test/LSTM-for-Time-Series-Prediction/core/data_processor.py",
+          "git_blob_sha": "b3ef8fa20f3da8345bedecd07a0811eff0d030cb"
+        },
+        {
+          "path": "dataset_test/LSTM-for-Time-Series-Prediction/core/utils.py",
+          "git_blob_sha": "fc14e1cab22472727bd7b4986f2789cbc5dbf177"
+        },
+        {
+          "path": "dataset_test/LSTM-for-Time-Series-Prediction/nonsentiment_config.json",
+          "git_blob_sha": "725f49cfacdee681872f6551fdc40c26505704ef"
+        },
+        {
+          "path": "dataset_test/LSTM-for-Time-Series-Prediction/run.py",
+          "git_blob_sha": "9196b8c30bb73e7a0e0cc0d73315bfb67c2f58a2"
+        },
+        {
+          "path": "dataset_test/LSTM-for-Time-Series-Prediction/sentiment_config.json",
+          "git_blob_sha": "48c004f76e654e6be2707179c9b4066d20afcbfa"
+        },
+        {
+          "path": "dataset_test/RNN-for-Time-Series-Prediction/core/RNN_modified_model.py",
+          "git_blob_sha": "88b5b1380ea98d8cd7b58e34bbbd6ae76e402404"
+        },
+        {
+          "path": "dataset_test/RNN-for-Time-Series-Prediction/core/__init__.py",
+          "git_blob_sha": "f490fba7619d922375d9cad2d90d858794ae8825"
+        },
+        {
+          "path": "dataset_test/RNN-for-Time-Series-Prediction/core/data_processor.py",
+          "git_blob_sha": "b3ef8fa20f3da8345bedecd07a0811eff0d030cb"
+        },
+        {
+          "path": "dataset_test/RNN-for-Time-Series-Prediction/core/model.py",
+          "git_blob_sha": "cc3a3ca35eff8070e17bd3fe9fbfee8ca1a35551"
+        },
+        {
+          "path": "dataset_test/RNN-for-Time-Series-Prediction/core/utils.py",
+          "git_blob_sha": "fc14e1cab22472727bd7b4986f2789cbc5dbf177"
+        },
+        {
+          "path": "dataset_test/RNN-for-Time-Series-Prediction/nonsentiment_config.json",
+          "git_blob_sha": "a89d9ecddb5207bb8d19371c5715947ce3a8080d"
+        },
+        {
+          "path": "dataset_test/RNN-for-Time-Series-Prediction/run.py",
+          "git_blob_sha": "5b8df14bc28245188e8723b7235eb3c750bcfa87"
+        },
+        {
+          "path": "dataset_test/RNN-for-Time-Series-Prediction/sentiment_config.json",
+          "git_blob_sha": "9bc6d8a4d43cc4cea65bf70a0fb0d38aee94cacf"
+        },
+        {
+          "path": "dataset_test/TimesNet-for-Time-Series-Prediction/run.py",
+          "git_blob_sha": "567784a97225283881b6c1e0683ccf1fb83f55a7"
+        },
+        {
+          "path": "dataset_test/Transformer-for-Time-Series-Prediction/run.py",
+          "git_blob_sha": "88c28d80e74996c95306830b30483a6dcf3e8447"
+        },
+        {
+          "path": "dataset_test/Transformer-for-Time-Series-Prediction/tst/__init__.py",
+          "git_blob_sha": "6ff14d518a85d100c727913892603fb553382abd"
+        },
+        {
+          "path": "dataset_test/Transformer-for-Time-Series-Prediction/tst/decoder.py",
+          "git_blob_sha": "413659920c5e75b2cc03eeb79244a1407b376edc"
+        },
+        {
+          "path": "dataset_test/Transformer-for-Time-Series-Prediction/tst/encoder.py",
+          "git_blob_sha": "38d550ea938656711d0f9ce78b9fb6782a749ff4"
+        },
+        {
+          "path": "dataset_test/Transformer-for-Time-Series-Prediction/tst/loss.py",
+          "git_blob_sha": "0cdb0d71bcfb7db42bc1d93e613a4de27059bf86"
+        },
+        {
+          "path": "dataset_test/Transformer-for-Time-Series-Prediction/tst/multiHeadAttention.py",
+          "git_blob_sha": "d776ebf8b79c8e69a354859971d6d6e0dd60a16e"
+        },
+        {
+          "path": "dataset_test/Transformer-for-Time-Series-Prediction/tst/positionwiseFeedForward.py",
+          "git_blob_sha": "0fbbd74e32ed153dd91e5f086294e451832a2679"
+        },
+        {
+          "path": "dataset_test/Transformer-for-Time-Series-Prediction/tst/transformer.py",
+          "git_blob_sha": "abd1dfbd88b4f07dd5fafeb489745825389801ee"
+        },
+        {
+          "path": "dataset_test/Transformer-for-Time-Series-Prediction/tst/utils.py",
+          "git_blob_sha": "9c0f821bbd109bc5d02115838a31f426e0a87734"
+        }
+      ],
+      "models": [
+        "CNN",
+        "RNN",
+        "LSTM",
+        "GRU",
+        "Transformer",
+        "TimesNet"
+      ],
+      "blocked": []
+    },
+    "fintexts": {
+      "source_repository": "https://github.com/leejaehoon2016/FinTexTS.git",
+      "source_commit": "8aa427de4831b266092c3af9c8a4d536d0e397dc",
+      "source_root": "/opt/FinTexTS",
+      "models": [
+        "DLinear",
+        "PatchTST",
+        "Informer",
+        "Autoformer",
+        "iTransformer",
+        "Reformer",
+        "Crossformer",
+        "Transformer",
+        "FiLM",
+        "Nonstationary_Transformer",
+        "TSMixer",
+        "TiDE"
+      ],
+      "blocked": [],
+      "files": [
+        {
+          "path": "forecasting_task/data_provider/dataset.py",
+          "git_blob_sha": "f8583a4341e96cbecae6b3796485b0dfb60e7391"
+        },
+        {
+          "path": "forecasting_task/layers/AutoCorrelation.py",
+          "git_blob_sha": "5faec7c733c6bcb1bd36e332764f7f49fcab598e"
+        },
+        {
+          "path": "forecasting_task/layers/Autoformer_EncDec.py",
+          "git_blob_sha": "6fce4bcd6b3d3eb00e9bcf5931ed2ee301554f4a"
+        },
+        {
+          "path": "forecasting_task/layers/Conv_Blocks.py",
+          "git_blob_sha": "96ce3fc05ac897f678542f72ec74f2007e5f8cd6"
+        },
+        {
+          "path": "forecasting_task/layers/Crossformer_EncDec.py",
+          "git_blob_sha": "42fc3225ea12c34c2aca7f347d69fd36f677e308"
+        },
+        {
+          "path": "forecasting_task/layers/ETSformer_EncDec.py",
+          "git_blob_sha": "8cf41742315413111f667ceed4a87bc7bb128197"
+        },
+        {
+          "path": "forecasting_task/layers/Embed.py",
+          "git_blob_sha": "977e25568d37b9dd0efd442dcc5b33eab9843d71"
+        },
+        {
+          "path": "forecasting_task/layers/FourierCorrelation.py",
+          "git_blob_sha": "471b3950dc7bd1cb8036c6e1d48938ad70cb0095"
+        },
+        {
+          "path": "forecasting_task/layers/MultiWaveletCorrelation.py",
+          "git_blob_sha": "b6feb59fd3417243dade96f861a58e2245038f7c"
+        },
+        {
+          "path": "forecasting_task/layers/Pyraformer_EncDec.py",
+          "git_blob_sha": "1af1bf2cd05d8824882d1e074c091684109f7e9e"
+        },
+        {
+          "path": "forecasting_task/layers/SelfAttention_Family.py",
+          "git_blob_sha": "584fbed44d0347fcfd798654e9ac06a368eba2f7"
+        },
+        {
+          "path": "forecasting_task/layers/StandardNorm.py",
+          "git_blob_sha": "990d0fdc17751b724354e70b89fd6d3ff0f4dd29"
+        },
+        {
+          "path": "forecasting_task/layers/Transformer_EncDec.py",
+          "git_blob_sha": "dabf4c2a5e1e11a04eb4ed67785033dd259ee738"
+        },
+        {
+          "path": "forecasting_task/layers/__init__.py",
+          "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+        },
+        {
+          "path": "forecasting_task/models/Autoformer.py",
+          "git_blob_sha": "8faf0a2a0db6a2ced4b072a7c1b344957c0a776b"
+        },
+        {
+          "path": "forecasting_task/models/Crossformer.py",
+          "git_blob_sha": "c47eebe32ff6d7b0cf8271151e7b06940dd7bbec"
+        },
+        {
+          "path": "forecasting_task/models/DLinear.py",
+          "git_blob_sha": "6b68047258879b444eb4c075becc143c4bddbe81"
+        },
+        {
+          "path": "forecasting_task/models/ETSformer.py",
+          "git_blob_sha": "a79b3da7dd1017da225747eb26dcae9bfb02df84"
+        },
+        {
+          "path": "forecasting_task/models/FEDformer.py",
+          "git_blob_sha": "9a4933e9cd5f21cecb9a5ffd2a11f9870aff55d1"
+        },
+        {
+          "path": "forecasting_task/models/FiLM.py",
+          "git_blob_sha": "d47891518307e32cec8f92c1d63936772b701bab"
+        },
+        {
+          "path": "forecasting_task/models/FreTS.py",
+          "git_blob_sha": "ca4e0b648db42a1846b7a0a9a661a39177f47005"
+        },
+        {
+          "path": "forecasting_task/models/Informer.py",
+          "git_blob_sha": "1b5e9ec890ecf9528a85495d79127c00359005e9"
+        },
+        {
+          "path": "forecasting_task/models/Koopa.py",
+          "git_blob_sha": "0eea94155561b56bc0fae055f157098627db54a9"
+        },
+        {
+          "path": "forecasting_task/models/LightTS.py",
+          "git_blob_sha": "c06a2377d1707807ebbc46a73ede49a0c8ec1da8"
+        },
+        {
+          "path": "forecasting_task/models/MICN.py",
+          "git_blob_sha": "aeac693240d647c8585c03cb33046e0f1ced194e"
+        },
+        {
+          "path": "forecasting_task/models/Nonstationary_Transformer.py",
+          "git_blob_sha": "9abc2dff2a4f15c711d31a18841f05f41d3e2aa6"
+        },
+        {
+          "path": "forecasting_task/models/PatchTST.py",
+          "git_blob_sha": "280f88c77c8dadc32358b7be511ca71d614c0292"
+        },
+        {
+          "path": "forecasting_task/models/Pyraformer.py",
+          "git_blob_sha": "d92693c09d95c0866e539517a491c9029e5ec960"
+        },
+        {
+          "path": "forecasting_task/models/Reformer.py",
+          "git_blob_sha": "b29336c09fff873f46a0feadc1223aa37c157f55"
+        },
+        {
+          "path": "forecasting_task/models/SegRNN.py",
+          "git_blob_sha": "afff1bc07dd14d227bbecdd36941d57f8aa8f63e"
+        },
+        {
+          "path": "forecasting_task/models/TSMixer.py",
+          "git_blob_sha": "76884d467f17d64aa87d8e22cc9f0aa6231914cf"
+        },
+        {
+          "path": "forecasting_task/models/TiDE.py",
+          "git_blob_sha": "f6c25294c74d628c847accf6dffd7e3c9b8fd1cc"
+        },
+        {
+          "path": "forecasting_task/models/TimeMixer.py",
+          "git_blob_sha": "8d89d012daf44632285103e39cc5119f6008494a"
+        },
+        {
+          "path": "forecasting_task/models/TimesNet.py",
+          "git_blob_sha": "c4bb86f35db94f75dc73f23414c3a3d634c41c63"
+        },
+        {
+          "path": "forecasting_task/models/Transformer.py",
+          "git_blob_sha": "cf678326186759ca0dd3c791385e28f2771c0274"
+        },
+        {
+          "path": "forecasting_task/models/__init__.py",
+          "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+        },
+        {
+          "path": "forecasting_task/models/iTransformer.py",
+          "git_blob_sha": "62088450f9ae1aa8f8969a4dbbbf5dfdbeb25692"
+        },
+        {
+          "path": "forecasting_task/run.py",
+          "git_blob_sha": "eeb46117af2859983718e2f92931d1cbdb74f14a"
+        },
+        {
+          "path": "forecasting_task/utils/ADFtest.py",
+          "git_blob_sha": "967f776aaf6613ac87d62d85d1cf1788d565ad56"
+        },
+        {
+          "path": "forecasting_task/utils/__init__.py",
+          "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+        },
+        {
+          "path": "forecasting_task/utils/augmentation.py",
+          "git_blob_sha": "64b194d31092fac4565d71d404eb7298d2c05912"
+        },
+        {
+          "path": "forecasting_task/utils/dtw.py",
+          "git_blob_sha": "941eae8e227c441da4e7f472e310d3f7bb999a5b"
+        },
+        {
+          "path": "forecasting_task/utils/dtw_metric.py",
+          "git_blob_sha": "5ab39bfdff0781f0155d0801999ed8c1ce0d9292"
+        },
+        {
+          "path": "forecasting_task/utils/losses.py",
+          "git_blob_sha": "21438e741887af4d2efc14af849aad52daf26189"
+        },
+        {
+          "path": "forecasting_task/utils/m4_summary.py",
+          "git_blob_sha": "acd50fef8e3df6185598cc2c2afc8f40dd573ec1"
+        },
+        {
+          "path": "forecasting_task/utils/masking.py",
+          "git_blob_sha": "a19cbf63b8d1d1927eceabcbe4a1b5313238b75b"
+        },
+        {
+          "path": "forecasting_task/utils/metrics.py",
+          "git_blob_sha": "b4f5a76b8a96ec080401451ac54f66370dd794f8"
+        },
+        {
+          "path": "forecasting_task/utils/print_args.py",
+          "git_blob_sha": "b96d113aa8131743f6da5d8b95f711460d834686"
+        },
+        {
+          "path": "forecasting_task/utils/timefeatures.py",
+          "git_blob_sha": "7c1297293891c1c86ec938edf95e5fa3f7e52261"
+        },
+        {
+          "path": "forecasting_task/utils/tools.py",
+          "git_blob_sha": "08fb91b9de2f27e8bef33fec08fca61c237b76ad"
+        }
+      ]
+    },
+    "finmultitime": {
+      "models": [
+        "RNN",
+        "LSTM",
+        "GRU",
+        "CNN",
+        "TimeNetReconstructed"
+      ],
+      "blocked": [
+        {
+          "model": "CALF",
+          "reason": "No FinMultiTime adapter/config/checkpoint acceptance yet",
+          "upstream": "https://github.com/Hank0626/CALF"
+        },
+        {
+          "model": "ChatTime",
+          "reason": "No FinMultiTime adapter/config/checkpoint acceptance yet",
+          "upstream": "https://github.com/ForestsKing/ChatTime"
+        },
+        {
+          "model": "FTS-Text-MoE",
+          "reason": "Confirmed author training implementation and FinMultiTime adapter not recovered"
+        }
+      ],
+      "protocol": "reconstructed"
+    }
+  }
+}

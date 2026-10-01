@@ -1,0 +1,25 @@
+FROM docker.io/library/ubuntu:22.04@sha256:b8b6ee6aa931ecd9d0d952abc34dc0e5f7c6a30c6bb71b079fe399fde0329c02
+ARG SOURCE_REVISION=unknown
+LABEL org.opencontainers.image.revision="${SOURCE_REVISION}"
+ENV DEBIAN_FRONTEND=noninteractive PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 \
+    MPLBACKEND=Agg PIP_DISABLE_PIP_VERSION_CHECK=1 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 \
+    CUDA_VISIBLE_DEVICES=-1 HF_HOME=/cache/huggingface
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.10 python3.10-venv ca-certificates git libgomp1 \
+    && dpkg-query -W > /opt/os-packages.txt && rm -rf /var/lib/apt/lists/*
+COPY containers/ /opt/containers/
+WORKDIR /work
+ENV PAPER_PROFILE=fnspid TF_NUM_INTRAOP_THREADS=4 TF_NUM_INTEROP_THREADS=2
+RUN python3.10 -m venv /opt/torch && python3.10 -m venv /opt/keras
+RUN /opt/torch/bin/python -m pip install --no-cache-dir pip==24.3.1 \
+    && /opt/torch/bin/python -m pip install --no-cache-dir torch==2.5.0 --index-url https://download.pytorch.org/whl/cpu \
+    && /opt/torch/bin/python -m pip install --no-cache-dir -r /opt/containers/requirements-fnspid-torch.txt \
+    && /opt/torch/bin/python -m pip check \
+    && /opt/torch/bin/python -m pip freeze > /opt/torch/environment.freeze.txt
+RUN /opt/keras/bin/python -m pip install --no-cache-dir pip==24.3.1 \
+    && /opt/keras/bin/python -m pip install --no-cache-dir -r /opt/containers/requirements-fnspid-keras.txt \
+    && /opt/keras/bin/python -m pip check \
+    && /opt/keras/bin/python -m pip freeze > /opt/keras/environment.freeze.txt
+RUN python3.10 /opt/containers/bootstrap.py fnspid --destination /opt/FNSPID
+ENTRYPOINT ["/usr/bin/python3.10", "/opt/containers/entrypoint.py"]
+CMD ["inventory"]

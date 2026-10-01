@@ -1,0 +1,22 @@
+FROM docker.io/library/ubuntu:22.04@sha256:b8b6ee6aa931ecd9d0d952abc34dc0e5f7c6a30c6bb71b079fe399fde0329c02
+ARG SOURCE_REVISION=unknown
+LABEL org.opencontainers.image.revision="${SOURCE_REVISION}"
+ENV DEBIAN_FRONTEND=noninteractive PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 \
+    MPLBACKEND=Agg PIP_DISABLE_PIP_VERSION_CHECK=1 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 \
+    CUDA_VISIBLE_DEVICES=-1 HF_HOME=/cache/huggingface
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.10 python3.10-venv ca-certificates git libgomp1 \
+    && dpkg-query -W > /opt/os-packages.txt && rm -rf /var/lib/apt/lists/*
+COPY containers/ /opt/containers/
+WORKDIR /work
+ENV PAPER_PROFILE=fintexts PATH="/opt/venv/bin:${PATH}"
+COPY paper_tools/ /opt/paper_tools/
+RUN python3.10 -m venv /opt/venv \
+    && python -m pip install --no-cache-dir pip==24.3.1 \
+    && python -m pip install --no-cache-dir torch==2.5.0 --index-url https://download.pytorch.org/whl/cpu \
+    && python -m pip install --no-cache-dir -r /opt/paper_tools/requirements-workflows.txt \
+    && python -m pip check \
+    && python -m pip freeze > /opt/venv/environment.freeze.txt
+RUN python /opt/containers/bootstrap.py fintexts --destination /opt/FinTexTS
+ENTRYPOINT ["/opt/venv/bin/python", "/opt/containers/entrypoint.py"]
+CMD ["inventory"]

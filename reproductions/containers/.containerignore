@@ -1,0 +1,5 @@
+*
+!containers/
+!containers/**
+!paper_tools/
+!paper_tools/**

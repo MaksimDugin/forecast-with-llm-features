@@ -1,0 +1,29 @@
+{
+  "date_utc": "2026-10-01",
+  "base_revision": "f292a3cdd27eaa30f1bc632592fb62cda34e3d24",
+  "packaging_tests": "13 PASS",
+  "existing_input_tests": "10 PASS",
+  "ruff": "PASS",
+  "pinned_author_fetch_and_blob_verification": {
+    "fnspid": "PASS: 41 selected source/config files, 33 Python AST checks",
+    "fintexts": "PASS: 50 selected Python source files"
+  },
+  "fnspid_input_lists": {
+    "CNN": 50,
+    "RNN": 50,
+    "LSTM": 50,
+    "GRU": 50,
+    "Transformer": 48,
+    "TimesNet": 50
+  },
+  "image_build": "NOT_RUN: Podman unavailable in editing environment",
+  "dependency_resolution_inside_new_images": "PENDING_SERVER_BUILD",
+  "server_forward_backward_checkpoint_tests": "PENDING",
+  "training_started": false,
+  "full_paper_reproduction": false,
+  "finmultitime_missing_models": [
+    "CALF",
+    "ChatTime",
+    "FTS-Text-MoE"
+  ]
+}

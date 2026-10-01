@@ -26,3 +26,17 @@ contourpy==1.3.2. pip check проходит. В Containerfile зависимо�
 в runtime validation, после RED теста добавлена отдельно включаемая поправка
 устройства в памяти. Author checkout остаётся clean. Непоправленный CPU путь
 не объявляется работающим.
+
+## CSV discovery in FNSPID packaging (2026-10-01)
+
+The first static preflight collected every `.csv` AST constant, including output
+filename suffixes, and incorrectly demanded 52 inputs instead of 50. A failing
+regression test reproduced this without training. Discovery now reads only literal
+`names_5`, `names_25`, `names_50` lists; all six pinned scripts resolve correctly.
+Prevention: derive inputs from input declarations, not all filename-like strings.
+
+## Unbounded source-tree output (2026-10-01)
+
+Printed an entire large FNSPID recursive tree during discovery, causing output
+truncation. Filter source entries before displaying metadata; store raw responses
+without printing them. The packaging manifest includes only selected source files.
